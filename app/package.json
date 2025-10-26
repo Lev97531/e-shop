@@ -1,0 +1,9 @@
+{
+  "name": "e-shop",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@tanstack/react-start": "^1.133.32",
+    "@tanstack/react-router": "^1.133.32"
+  }
+}
