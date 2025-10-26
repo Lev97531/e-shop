@@ -21,7 +21,7 @@ const updateCount = createServerFn({ method: 'POST' })
   .inputValidator((d: number) => d)
   .handler(async ({ data }) => {
     const count = await readCount()
-    await fs.promises.writeFile(filePath, `${count + data}`)
+    // await fs.promises.writeFile(filePath, `${count + data}`)
   })
 
 export const Route = createFileRoute('/')({
@@ -35,6 +35,7 @@ function Home() {
 
   return (
     <button
+      className="btn btn-soft btn-primary"
       type="button"
       onClick={() => {
         updateCount({ data: 1 }).then(() => {
