@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output   = "generated"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id               Int          @id @default(autoincrement())
+  name             String
+  parent_id        Int?
+  categories       categories?  @relation("categoriesTocategories", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_categories categories[] @relation("categoriesTocategories")
+  items            items[]
+}
+
+model items {
+  id          Int         @id @default(autoincrement())
+  name        String
+  price       Int
+  category_id Int?
+  categories  categories? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique(map: "sqlite_autoindex_users_1")
+}
