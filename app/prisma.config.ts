@@ -5,6 +5,7 @@ export default defineConfig({
   schema: 'prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',
+    seed: 'node --import ./prisma/resolve.ts prisma/seed.ts',
   },
   engine: 'classic',
   datasource: {

@@ -1,5 +1,5 @@
-import { Header } from './header'
-import { SideMenu } from './side-menu'
+import { Header } from './Header'
+import { SideMenu } from './SideMenu'
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

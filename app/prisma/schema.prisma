@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client"
-  output   = "generated"
+  provider        = "prisma-client"
+  output          = "generated"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -8,25 +9,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model categories {
-  id               Int          @id @default(autoincrement())
-  name             String
-  parent_id        Int?
-  categories       categories?  @relation("categoriesTocategories", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_categories categories[] @relation("categoriesTocategories")
-  items            items[]
+model Category {
+  id       Int        @id @default(autoincrement())
+  name     String
+  parentId Int?
+  category Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryChildren")
+  items    Item[]
 }
 
-model items {
-  id          Int         @id @default(autoincrement())
-  name        String
-  price       Int
-  category_id Int?
-  categories  categories? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+model Item {
+  id         Int       @id @default(autoincrement())
+  name       String
+  price      Int
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
 }
 
-model users {
+model User {
   id    Int    @id @default(autoincrement())
   name  String
-  email String @unique(map: "sqlite_autoindex_users_1")
+  email String @unique
+}
+
+view CategoriesTree {
+  json Json?
 }
