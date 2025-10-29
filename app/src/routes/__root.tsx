@@ -2,6 +2,7 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 import appCss from '../styles/app.css?url'
+import { Layout } from '~/home/Layout'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -26,7 +27,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <Layout>
+        <Outlet />
+      </Layout>
     </RootDocument>
   )
 }

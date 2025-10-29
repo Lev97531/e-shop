@@ -1,6 +1,6 @@
 import { prisma } from 'prisma'
 
-type CategoryTreeItem = {
+export type CategoryTreeItem = {
   id: string
   name: string
   children: CategoryTreeItem[]

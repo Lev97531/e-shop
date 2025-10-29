@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getCategoriesTree } from '~/home/get-categories-tree'
 import { Layout } from '../home/Layout'
@@ -13,9 +13,5 @@ export const Route = createFileRoute('/')({
 })
 
 function Home() {
-  const { categoriesTree } = Route.useLoaderData()
-
-  console.log('tree:', JSON.stringify(categoriesTree, undefined, 2))
-
-  return <Layout>123</Layout>
+  return 123
 }
