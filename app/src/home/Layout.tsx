@@ -1,10 +1,11 @@
+import { PropsWithChildren } from 'react'
 import { Header } from './Header'
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+export const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <div>
+    <div className="flex flex-col max-w-7xl mx-auto">
       <Header />
-      {children}
+      <div className="mt-4">{children}</div>
     </div>
   )
 }
