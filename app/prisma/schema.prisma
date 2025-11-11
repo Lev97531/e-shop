@@ -1,7 +1,6 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "generated"
-  previewFeatures = ["views"]
+  provider = "prisma-client"
+  output   = "generated"
 }
 
 datasource db {
@@ -9,29 +8,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
-  id       Int        @id @default(autoincrement())
-  name     String
-  parentId Int?
-  category Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryChildren")
-  items    Item[]
-}
-
-model Item {
-  id         Int       @id @default(autoincrement())
-  name       String
-  price      Int
-  categoryId Int?
-  category   Category? @relation(fields: [categoryId], references: [id])
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  priceCents  Int
+  imageUrl    String?
+  description String  @default("")
 }
 
 model User {
   id    Int    @id @default(autoincrement())
   name  String
   email String @unique
-}
-
-view CategoriesTree {
-  json Json?
 }

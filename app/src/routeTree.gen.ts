@@ -9,14 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as CategoryRouteImport } from './routes/$category'
 import { Route as IndexRouteImport } from './routes/index'
 
-const CategoryRoute = CategoryRouteImport.update({
-  id: '/$category',
-  path: '/$category',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,39 +19,28 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$category': typeof CategoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$category': typeof CategoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$category': typeof CategoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$category'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$category'
-  id: '__root__' | '/' | '/$category'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CategoryRoute: typeof CategoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/$category': {
-      id: '/$category'
-      path: '/$category'
-      fullPath: '/$category'
-      preLoaderRoute: typeof CategoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -70,7 +53,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CategoryRoute: CategoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
