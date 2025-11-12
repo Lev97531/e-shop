@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Prisma, prisma } from 'prisma'
+import { cart } from '~/cart/cart'
 
 const loadProducts = createServerFn().handler(async () => {
   return await prisma.product.findMany()
@@ -11,6 +12,7 @@ export const Route = createFileRoute('/')({
   loader: async () => {
     return { products: await loadProducts() }
   },
+  ssr: false,
 })
 
 function RouteComponent() {
@@ -37,7 +39,9 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
         <p>{product.description}</p>
         <div className="card-actions justify-end">
           <p className="font-bold text-2xl">{formatPrice(product.priceCents)}</p>
-          <button className="btn btn-primary">Do košíku</button>
+          <button className="btn btn-primary" onClick={() => cart.addItem(product)}>
+            Do košíku
+          </button>
         </div>
       </div>
     </div>
