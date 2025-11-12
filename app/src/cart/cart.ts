@@ -1,27 +1,28 @@
-import { Prisma } from 'prisma'
-import { cartStore } from './cart-store'
+import type { Product } from '~/shared/types'
+import { loadCartFromStorage, saveCartToStorage } from './cart-storage'
+import { notifyCartSubscribers } from './useProductsInCart'
 
-type Product = Prisma.ProductGetPayload<{}>
+export let productsInCart: Product[] = []
 
-function loadItems() {
-  const cartJson = localStorage.getItem('cart')
-
-  return (cartJson ? JSON.parse(cartJson) : []) as Product[]
+export function loadCartItems() {
+  productsInCart = loadCartFromStorage()
 }
 
-function saveItems(items: Product[]) {
-  localStorage.setItem('cart', JSON.stringify(items))
-  cartStore.notify()
+export function addToCart(product: Product) {
+  productsInCart = [...productsInCart, product]
+
+  saveCartToStorage(productsInCart)
+  notifyCartSubscribers()
 }
 
-function addItem(newItem: Product) {
-  const items = loadItems()
-  saveItems([...items, newItem])
-}
+export function deleteFromCart(productToDelete: Product) {
+  const indexToDelete = productsInCart.findIndex((item) => item.id === productToDelete.id)
+  if (indexToDelete == -1) {
+    return
+  }
 
-function deleteItem(itemToDelete: Product) {
-  const items = loadItems()
-  saveItems(items.filter((item) => item.id !== itemToDelete.id))
-}
+  productsInCart.splice(indexToDelete, 1)
 
-export const cart = { addItem, deleteItem, loadItems }
+  saveCartToStorage(productsInCart)
+  notifyCartSubscribers()
+}

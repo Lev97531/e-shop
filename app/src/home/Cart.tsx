@@ -1,18 +1,13 @@
-import { useSyncExternalStore } from 'react'
+import { useProductsInCard } from '~/cart/useProductsInCart'
 import { Dialog } from './Dialog'
-import { cartStore } from '~/cart/cart-store'
-import { cart } from '~/cart/cart'
 
 export const Cart = () => {
-  const items = useSyncExternalStore(
-    (subscription) => cartStore.subscribe(subscription),
-    () => cart.loadItems()
-  )
+  const items = useProductsInCard()
 
   return (
     <Dialog>
-      {items.map((item) => (
-        <div>{item.name}</div>
+      {items.map((item, i) => (
+        <div key={i}>{item.name}</div>
       ))}
     </Dialog>
   )
