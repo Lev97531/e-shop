@@ -1,6 +1,6 @@
-import type { Product } from '~/shared/types'
+import { CartItem } from './cart'
 
-export function loadCartFromStorage(): Product[] {
+export function loadCartFromStorage(): CartItem[] {
   try {
     const cartJson = localStorage.getItem('cart') ?? ''
     return JSON.parse(cartJson)
@@ -9,6 +9,6 @@ export function loadCartFromStorage(): Product[] {
   }
 }
 
-export function saveCartToStorage(productsInCart: Product[]) {
+export function saveCartToStorage(productsInCart: CartItem[]) {
   localStorage.setItem('cart', JSON.stringify(productsInCart))
 }

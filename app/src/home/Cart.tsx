@@ -1,6 +1,6 @@
 import { useProductsInCard } from '~/cart/useProductsInCart'
 import { Dialog } from './Dialog'
-import { deleteFromCart } from '~/cart/cart'
+import { decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 
 export const Cart = () => {
   const items = useProductsInCard()
@@ -9,8 +9,17 @@ export const Cart = () => {
     <Dialog>
       {items.map((item, i) => (
         <div key={i} className="flex justify-between">
-          <div>{item.name}</div>
-          <button className="btn" onClick={() => deleteFromCart(item)}>
+          <div>{item.product.name}</div>
+          <div className="join">
+            <button className="btn join-item" onClick={() => decreaseQuantity(item.product)}>
+              ➖
+            </button>
+            <span className="btn join-item cursor-default">{item.quantity}</span>
+            <button className="btn join-item" onClick={() => increaseQuantity(item.product)}>
+              ➕
+            </button>
+          </div>
+          <button className="btn" onClick={() => deleteFromCart(item.product)}>
             ❌
           </button>
         </div>
@@ -18,3 +27,4 @@ export const Cart = () => {
     </Dialog>
   )
 }
+
