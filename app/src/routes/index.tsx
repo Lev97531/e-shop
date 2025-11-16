@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Prisma, prisma } from 'prisma'
 import { addToCart } from '~/cart/cart'
+import { Cart } from '~/home/Cart'
 
 const loadProducts = createServerFn().handler(async () => {
   return await prisma.product.findMany()

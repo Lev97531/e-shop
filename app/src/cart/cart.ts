@@ -16,12 +16,7 @@ export function addToCart(product: Product) {
 }
 
 export function deleteFromCart(productToDelete: Product) {
-  const indexToDelete = productsInCart.findIndex((item) => item.id === productToDelete.id)
-  if (indexToDelete == -1) {
-    return
-  }
-
-  productsInCart.splice(indexToDelete, 1)
+  productsInCart = productsInCart.filter((product) => product.id !== productToDelete.id)
 
   saveCartToStorage(productsInCart)
   notifyCartSubscribers()
