@@ -37,7 +37,7 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
         <h2 className="card-title">{product.name}</h2>
         <p>{product.description}</p>
         <div className="card-actions justify-end">
-          <p className="font-bold text-2xl">{product.priceCents ? formatPrice(product.priceCents) : 'N/A'}</p>
+          <p className="font-bold text-2xl">{formatPrice(product.priceCents)}</p>
           <button className="btn btn-primary" onClick={() => addToCart(product)}>
             Do košíku
           </button>
@@ -47,7 +47,11 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
   )
 }
 
-function formatPrice(cents: number) {
+export function formatPrice(cents?: number) {
+  if (!cents) {
+    return 'N/A'
+  }
+
   const crowns = Math.round(cents / 100)
   const formatted = crowns.toLocaleString('cs-CZ').replace(/\s/g, '\u00A0')
 

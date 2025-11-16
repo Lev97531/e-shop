@@ -13,21 +13,16 @@ export function loadCartItems() {
 export function addToCart(product: Product) {
   const existingItem = productsInCart.find((item) => item.product.id === product.id)
   if (existingItem) {
-    existingItem.quantity++
-    productsInCart = [...productsInCart]
-  } else {
-    productsInCart = [...productsInCart, { product, quantity: 1 }]
+    return increaseQuantity(product)
   }
 
-  saveCartToStorage(productsInCart)
-  notifyCartSubscribers()
+  const newItems = [...productsInCart, { product, quantity: 1 }]
+  setProductsInCart(newItems)
 }
 
 export function deleteFromCart(productToDelete: Product) {
-  productsInCart = productsInCart.filter((item) => item.product.id !== productToDelete.id)
-
-  saveCartToStorage(productsInCart)
-  notifyCartSubscribers()
+  const remainingItems = productsInCart.filter((item) => item.product.id !== productToDelete.id)
+  setProductsInCart(remainingItems)
 }
 
 export function increaseQuantity(product: Product) {
@@ -37,9 +32,7 @@ export function increaseQuantity(product: Product) {
   }
 
   existingItem.quantity++
-  productsInCart = [...productsInCart]
-  saveCartToStorage(productsInCart)
-  notifyCartSubscribers()
+  setProductsInCart([...productsInCart])
 }
 
 export function decreaseQuantity(product: Product) {
@@ -54,7 +47,11 @@ export function decreaseQuantity(product: Product) {
     return deleteFromCart(product)
   }
 
-  productsInCart = [...productsInCart]
+  setProductsInCart([...productsInCart])
+}
+
+function setProductsInCart(items: CartItem[]) {
+  productsInCart = items
   saveCartToStorage(productsInCart)
   notifyCartSubscribers()
 }
