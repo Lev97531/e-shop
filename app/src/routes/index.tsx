@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Prisma, prisma } from 'prisma'
 import { addToCart } from '~/cart/cart'
-import { Cart } from '~/home/Cart'
+import NA from '~/shared/NA.jpg'
 
 const loadProducts = createServerFn().handler(async () => {
   return await prisma.product.findMany()
@@ -31,7 +31,7 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
   return (
     <div className="card bg-base-200 w-96 shadow-sm">
       <figure className="mt-4">
-        <img width={200} src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+        <img width={200} src={product.imageUrl || NA} alt="Shoes" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{product.name}</h2>
