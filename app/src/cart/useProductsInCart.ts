@@ -11,7 +11,7 @@ export function notifyCartSubscribers() {
 
 export function useProductsInCard() {
   useEffect(() => {
-    loadCartItems()
+   loadCartItems()
   }, [])
 
   return useSyncExternalStore(

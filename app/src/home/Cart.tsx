@@ -9,7 +9,8 @@ export const Cart = () => {
 
   return (
     <Dialog>
-      <div className="mt-8 flex flex-col gap-4">
+      <div className="text-4xl font-bold">Košík</div>
+      <div className="mt-4 flex flex-col gap-4">
         {items.map((item, i) => (
           <div key={i} className="flex gap-4 bg-base-200 p-4 rounded-xl">
             <div className="flex items-center">

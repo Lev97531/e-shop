@@ -6,8 +6,9 @@ export type CartItem = { product: Product; quantity: number }
 
 export let productsInCart: CartItem[] = []
 
-export function loadCartItems() {
-  productsInCart = loadCartFromStorage()
+export async function loadCartItems() {
+  productsInCart = await loadCartFromStorage()
+  notifyCartSubscribers()
 }
 
 export function addToCart(product: Product) {
