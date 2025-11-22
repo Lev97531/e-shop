@@ -1,17 +1,25 @@
-import { useProductsInCard } from '~/cart/useProductsInCart'
+import { useShoppingCart } from '~/cart/useShoppingCart'
 import { Dialog } from './Dialog'
 import { decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 import { formatPrice } from '~/routes'
 import NA from '~/shared/NA.jpg'
+import { PropsWithChildren } from 'react'
 
 export const Cart = () => {
-  const items = useProductsInCard()
+  const shoppingCart = useShoppingCart()
+
+  if (!shoppingCart.products.length) {
+    return (
+      <CartDialog>
+        <div className="mt-4 text-2xl">Košík je prazdny</div>
+      </CartDialog>
+    )
+  }
 
   return (
-    <Dialog>
-      <div className="text-4xl font-bold">Košík</div>
+    <CartDialog>
       <div className="mt-4 flex flex-col gap-4">
-        {items.map((item, i) => (
+        {shoppingCart.products.map((item, i) => (
           <div key={i} className="flex gap-4 bg-base-200 p-4 rounded-xl">
             <div className="flex items-center">
               <img width={128} src={item.product.imageUrl || NA} alt="Shoes" />
@@ -19,7 +27,10 @@ export const Cart = () => {
             <div className="flex flex-col flex-1 gap-2">
               <div className="flex justify-between">
                 <div>{item.product.name}</div>
-                <div>{formatPrice(item.product.priceCents)}</div>
+                <div className="flex gap-4">
+                  <div className="opacity-60">{formatPrice(item.product.priceCents)} Kč / ks</div>
+                  <div>{formatPrice(item.totalCents)} Kč</div>
+                </div>
               </div>
               <span className="text-xs opacity-60 max-w-4/5">{item.product.description || <>&nbsp;</>}</span>
               <div className="mt-4 flex justify-between">
@@ -40,7 +51,24 @@ export const Cart = () => {
           </div>
         ))}
       </div>
-    </Dialog>
+      <div className="flex gap-2 justify-end mt-4 items-center">
+        <div className="text-right">
+          <div>Cena k úhradě s DPH:</div>
+          <div className="font-bold text-xl">{formatPrice(shoppingCart.grandTotalCents)} Kč</div>
+        </div>
+        <div>
+          <button className="btn btn-primary">Pokračovat</button>
+        </div>
+      </div>
+    </CartDialog>
   )
 }
 
+function CartDialog({ children }: PropsWithChildren) {
+  return (
+    <Dialog>
+      <div className="text-4xl font-bold">Košík</div>
+      {children}
+    </Dialog>
+  )
+}

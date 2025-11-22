@@ -19,10 +19,14 @@ export async function loadCartFromStorage(): Promise<CartItem[]> {
     const ids = items.map((item) => item.productId)
     const products = await loadProducts({ data: { ids } })
 
-    const cartItems = items.map((item) => ({
-      product: products.find((p) => p.id === item.productId)!,
-      quantity: item.quantity,
-    }))
+    const cartItems = items.map((item) => {
+      const product = products.find((p) => p.id === item.productId)!
+      return {
+        product,
+        quantity: item.quantity,
+        totalCents: product.priceCents * item.quantity,
+      } as CartItem
+    })
 
     return cartItems
   } catch {

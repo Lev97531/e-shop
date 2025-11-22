@@ -1,58 +1,62 @@
 import type { Product } from '~/shared/types'
 import { loadCartFromStorage, saveCartToStorage } from './cart-storage'
-import { notifyCartSubscribers } from './useProductsInCart'
+import { notifyCartSubscribers } from './useShoppingCart'
 
-export type CartItem = { product: Product; quantity: number }
+export type CartItem = { product: Product; quantity: number; totalCents: number }
 
-export let productsInCart: CartItem[] = []
+export let shoppingCart: { products: CartItem[]; grandTotalCents: number } = { products: [], grandTotalCents: 0 }
 
 export async function loadCartItems() {
-  productsInCart = await loadCartFromStorage()
+  const products = await loadCartFromStorage()
+  const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
+  shoppingCart = { products, grandTotalCents }
   notifyCartSubscribers()
 }
 
 export function addToCart(product: Product) {
-  const existingItem = productsInCart.find((item) => item.product.id === product.id)
+  const existingItem = shoppingCart.products.find((item) => item.product.id === product.id)
   if (existingItem) {
     return increaseQuantity(product)
   }
 
-  const newItems = [...productsInCart, { product, quantity: 1 }]
+  const newItems = [...shoppingCart.products, { product, quantity: 1, totalCents: product.priceCents } as CartItem]
   setProductsInCart(newItems)
 }
 
 export function deleteFromCart(productToDelete: Product) {
-  const remainingItems = productsInCart.filter((item) => item.product.id !== productToDelete.id)
+  const remainingItems = shoppingCart.products.filter((item) => item.product.id !== productToDelete.id)
   setProductsInCart(remainingItems)
 }
 
 export function increaseQuantity(product: Product) {
-  const existingItem = productsInCart.find((item) => item.product.id === product.id)
+  const existingItem = shoppingCart.products.find((item) => item.product.id === product.id)
   if (!existingItem || existingItem.quantity >= 10) {
     return
   }
 
   existingItem.quantity++
-  setProductsInCart([...productsInCart])
+  existingItem.totalCents = existingItem.product.priceCents * existingItem.quantity
+  setProductsInCart([...shoppingCart.products])
 }
 
 export function decreaseQuantity(product: Product) {
-  const existingItem = productsInCart.find((item) => item.product.id === product.id)
+  const existingItem = shoppingCart.products.find((item) => item.product.id === product.id)
   if (!existingItem || existingItem.quantity < 1) {
     return
   }
 
   existingItem.quantity--
-
+  existingItem.totalCents = existingItem.product.priceCents * existingItem.quantity
   if (existingItem.quantity < 1) {
     return deleteFromCart(product)
   }
 
-  setProductsInCart([...productsInCart])
+  setProductsInCart([...shoppingCart.products])
 }
 
-function setProductsInCart(items: CartItem[]) {
-  productsInCart = items
-  saveCartToStorage(productsInCart)
+function setProductsInCart(products: CartItem[]) {
+  const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
+  shoppingCart = { products, grandTotalCents }
+  saveCartToStorage(products)
   notifyCartSubscribers()
 }
