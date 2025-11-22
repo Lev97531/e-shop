@@ -1,9 +1,47 @@
 import { useShoppingCart } from '~/cart/useShoppingCart'
 import { Dialog } from './Dialog'
-import { decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
+import { CartItem, decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 import { formatPrice } from '~/routes'
 import NA from '~/shared/NA.jpg'
 import { PropsWithChildren } from 'react'
+import { createServerFn } from '@tanstack/react-start'
+import { Stripe } from 'stripe'
+import { prisma } from 'prisma'
+
+type CheckoutItem = { id: number; quantity: number }
+
+const checkout = createServerFn({ method: 'POST' })
+  .inputValidator((data: { products: CheckoutItem[] }) => data)
+  .handler(async ({ data: { products } }) => {
+    const productsInDb = await prisma.product.findMany({ where: { id: { in: products.map((p) => p.id) } } })
+    const productsWithPrices = products.map((p) => {
+      return {
+        ...p,
+        priceCents: productsInDb.find((pi) => pi.id === p.id)!.priceCents,
+        name: productsInDb.find((pi) => pi.id === p.id)!.name,
+      }
+    })
+
+    console.log(productsWithPrices)
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'czk',
+            product_data: { name: 'Demo Item' },
+            unit_amount: 1999, // $19.99
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: 'http://localhost:3000/success',
+      cancel_url: 'http://localhost:3000/cancel',
+    })
+  })
 
 export const Cart = () => {
   const shoppingCart = useShoppingCart()
@@ -57,7 +95,17 @@ export const Cart = () => {
           <div className="font-bold text-xl">{formatPrice(shoppingCart.grandTotalCents)} Kč</div>
         </div>
         <div>
-          <button className="btn btn-primary">Pokračovat</button>
+          <button
+            className="btn btn-primary"
+            onClick={async () => {
+              const products = shoppingCart.products.map(
+                (product) => ({ id: product.product.id, quantity: product.quantity } as CheckoutItem)
+              )
+              await checkout({ data: { products } })
+            }}
+          >
+            Pokračovat
+          </button>
         </div>
       </div>
     </CartDialog>
