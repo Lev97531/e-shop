@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Prisma, prisma } from 'prisma'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 import { addToCart } from '~/cart/cart'
 import NA from '~/shared/NA.jpg'
 
@@ -13,10 +15,20 @@ export const Route = createFileRoute('/')({
   loader: async () => {
     return { products: await loadProducts() }
   },
+  validateSearch: (search) => ({
+    success: search.success as boolean | undefined,
+  }),
 })
 
 function RouteComponent() {
   const { products } = Route.useLoaderData()
+  const { success } = Route.useSearch()
+
+  useEffect(() => {
+    if (success) {
+      toast.success('Děkujeme za nakup!', { duration: 10_000 })
+    }
+  }, [success])
 
   return (
     <div className="inline-flex flex-wrap gap-4 mx-auto">
