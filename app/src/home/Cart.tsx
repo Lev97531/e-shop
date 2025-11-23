@@ -1,12 +1,12 @@
+import { createServerFn } from '@tanstack/react-start'
+import { prisma } from 'prisma'
+import { PropsWithChildren } from 'react'
+import { Stripe } from 'stripe'
+import { decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 import { useShoppingCart } from '~/cart/useShoppingCart'
-import { Dialog } from './Dialog'
-import { CartItem, decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 import { formatPrice } from '~/routes'
 import NA from '~/shared/NA.jpg'
-import { PropsWithChildren } from 'react'
-import { createServerFn } from '@tanstack/react-start'
-import { Stripe } from 'stripe'
-import { prisma } from 'prisma'
+import { Dialog } from './Dialog'
 
 type CheckoutItem = { id: number; quantity: number }
 
@@ -25,22 +25,30 @@ const checkout = createServerFn({ method: 'POST' })
     console.log(productsWithPrices)
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = productsWithPrices.map(
+      (p) =>
+        ({
+          price_data: {
+            currency: 'czk',
+            product_data: { name: p.name, metadata: { id: p.id } },
+            unit_amount: p.priceCents,
+          },
+          quantity: p.quantity,
+        } as Stripe.Checkout.SessionCreateParams.LineItem)
+    )
+
+    const baseUrl = process.env.WEBSITE_BASE_URL
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'czk',
-            product_data: { name: 'Demo Item' },
-            unit_amount: 1999, // $19.99
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000/cancel',
+      line_items: lineItems,
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}`,
     })
+
+    return session.url
   })
 
 export const Cart = () => {
@@ -101,7 +109,11 @@ export const Cart = () => {
               const products = shoppingCart.products.map(
                 (product) => ({ id: product.product.id, quantity: product.quantity } as CheckoutItem)
               )
-              await checkout({ data: { products } })
+              const url = await checkout({ data: { products } })
+
+              if (url !== null) {
+                window.location.href = url
+              }
             }}
           >
             Pokračovat
