@@ -7,7 +7,6 @@ export default defineConfig({
     path: 'prisma/migrations',
     seed: 'node --import ./prisma/resolve.ts prisma/seed.ts',
   },
-  engine: 'classic',
   datasource: {
     url: env('DATABASE_URL'),
   },
