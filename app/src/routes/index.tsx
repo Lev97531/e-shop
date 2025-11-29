@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { Prisma, prisma } from 'prisma'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { addToCart } from '~/cart/cart'
+import { addToCart, cartLoaded, clearCart } from '~/cart/cart'
 import NA from '~/shared/NA.jpg'
 
 const loadProducts = createServerFn().handler(async () => {
@@ -27,6 +27,9 @@ function RouteComponent() {
   useEffect(() => {
     if (success) {
       toast.success('Děkujeme za nakup!', { duration: 10_000 })
+      cartLoaded.promise.then(() => {
+        clearCart()
+      })
     }
   }, [success])
 
@@ -50,7 +53,13 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
         <p>{product.description}</p>
         <div className="card-actions justify-end">
           <p className="font-bold text-2xl">{formatPrice(product.priceCents)},-</p>
-          <button className="btn btn-primary" onClick={() => addToCart(product)}>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              toast.success(`${product.name} uspšně byl přidan do košiku`)
+              addToCart(product)
+            }}
+          >
             Do košíku
           </button>
         </div>

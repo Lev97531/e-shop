@@ -6,11 +6,14 @@ export type CartItem = { product: Product; quantity: number; totalCents: number 
 
 export let shoppingCart: { products: CartItem[]; grandTotalCents: number } = { products: [], grandTotalCents: 0 }
 
+export const cartLoaded = Promise.withResolvers<void>()
+
 export async function loadCartItems() {
   const products = await loadCartFromStorage()
   const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
   shoppingCart = { products, grandTotalCents }
   notifyCartSubscribers()
+  cartLoaded.resolve()
 }
 
 export function addToCart(product: Product) {
@@ -26,6 +29,10 @@ export function addToCart(product: Product) {
 export function deleteFromCart(productToDelete: Product) {
   const remainingItems = shoppingCart.products.filter((item) => item.product.id !== productToDelete.id)
   setProductsInCart(remainingItems)
+}
+
+export function clearCart() {
+  setProductsInCart([])
 }
 
 export function increaseQuantity(product: Product) {

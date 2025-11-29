@@ -22,8 +22,6 @@ const checkout = createServerFn({ method: 'POST' })
       }
     })
 
-    console.log(productsWithPrices)
-
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = productsWithPrices.map(
