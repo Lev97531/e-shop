@@ -55,7 +55,7 @@ export const Cart = () => {
   if (!shoppingCart.products.length) {
     return (
       <CartDialog>
-        <div className="mt-4 text-2xl">Košík je prazdny</div>
+        <div className="mt-4 text-2xl">Košík je prázdný</div>
       </CartDialog>
     )
   }
