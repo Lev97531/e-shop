@@ -41,6 +41,7 @@ const checkout = createServerFn({ method: 'POST' })
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
+      customer_email: 'test@example.com',
       line_items: lineItems,
       success_url: `${baseUrl}?success=true`,
       cancel_url: `${baseUrl}`,
