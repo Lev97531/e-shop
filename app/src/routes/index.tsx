@@ -26,7 +26,13 @@ function RouteComponent() {
 
   useEffect(() => {
     if (success) {
-      toast.success('Děkujeme za nakup!', { duration: 10_000 })
+      toast(
+        <div className="text-5xl flex flex-col gap-4">
+          <div>Děkujeme za nakup!</div>
+          <div className="mx-auto text-7xl">🎉</div>
+        </div>,
+        { duration: 10_000 }
+      )
       clearCart()
     }
   }, [success])

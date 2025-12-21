@@ -4,14 +4,23 @@ import { notifyCartSubscribers } from './useShoppingCart'
 
 export type CartItem = { product: Product; quantity: number; totalCents: number }
 
-export let shoppingCart: { products: CartItem[]; grandTotalCents: number } = { products: [], grandTotalCents: 0 }
+export let shoppingCart: { products: CartItem[]; grandTotalCents: number; grandTotalQuantity: number } = {
+  products: [],
+  grandTotalCents: 0,
+  grandTotalQuantity: 0,
+}
 
 const cartLoaded = Promise.withResolvers<void>()
 
+function updateProductsTotal(products: CartItem[]) {
+  const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
+  const grandTotalQuantity = products.reduce((total, item) => total + item.quantity, 0)
+  shoppingCart = { products, grandTotalCents, grandTotalQuantity }
+}
+
 export async function loadCartItems() {
   const products = await loadCartFromStorage()
-  const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
-  shoppingCart = { products, grandTotalCents }
+  updateProductsTotal(products)
   notifyCartSubscribers()
   cartLoaded.resolve()
 }
@@ -63,8 +72,7 @@ export function decreaseQuantity(product: Product) {
 }
 
 function setProductsInCart(products: CartItem[]) {
-  const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
-  shoppingCart = { products, grandTotalCents }
+  updateProductsTotal(products)
   saveCartToStorage(products)
   notifyCartSubscribers()
 }
