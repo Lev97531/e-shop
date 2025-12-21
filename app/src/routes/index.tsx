@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { Prisma, prisma } from 'prisma'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { addToCart, cartLoaded, clearCart } from '~/cart/cart'
+import { addToCart, clearCart } from '~/cart/cart'
 import NA from '~/shared/NA.jpg'
 
 const loadProducts = createServerFn().handler(async () => {
@@ -27,9 +27,7 @@ function RouteComponent() {
   useEffect(() => {
     if (success) {
       toast.success('Děkujeme za nakup!', { duration: 10_000 })
-      cartLoaded.promise.then(() => {
-        clearCart()
-      })
+      clearCart()
     }
   }, [success])
 

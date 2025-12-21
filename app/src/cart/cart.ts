@@ -6,7 +6,7 @@ export type CartItem = { product: Product; quantity: number; totalCents: number 
 
 export let shoppingCart: { products: CartItem[]; grandTotalCents: number } = { products: [], grandTotalCents: 0 }
 
-export const cartLoaded = Promise.withResolvers<void>()
+const cartLoaded = Promise.withResolvers<void>()
 
 export async function loadCartItems() {
   const products = await loadCartFromStorage()
@@ -31,7 +31,8 @@ export function deleteFromCart(productToDelete: Product) {
   setProductsInCart(remainingItems)
 }
 
-export function clearCart() {
+export async function clearCart() {
+  await cartLoaded.promise
   setProductsInCart([])
 }
 
