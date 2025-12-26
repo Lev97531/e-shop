@@ -11,6 +11,7 @@
       "~/*": ["./src/*"],
       "prisma": ["./prisma/prisma"]
     },
-    "lib": ["DOM", "ESNext"]
+    "lib": ["DOM", "ESNext"],
+    "strict": true
   }
 }
