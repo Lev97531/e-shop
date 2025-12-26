@@ -19,4 +19,13 @@ model User {
   id    Int    @id @default(autoincrement())
   name  String
   email String @unique
+  
+  emailAuth EmailAuth?
+}
+
+model EmailAuth {
+  userId Int @id
+  user   User @relation(fields: [userId], references: [id])
+  passwordHash String
+  passwordSalt String
 }
