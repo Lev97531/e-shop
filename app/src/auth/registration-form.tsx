@@ -1,6 +1,9 @@
 import { z } from 'zod'
 import { useForm } from '@tanstack/react-form'
 import { register } from './registration'
+import { toast } from 'sonner'
+import { Route } from '../routes/register'
+import { useNavigate } from '@tanstack/react-router'
 
 export const registrationSchema = z
   .object({
@@ -14,6 +17,8 @@ export const registrationSchema = z
   })
 
 export function RegistrationForm() {
+  const navigate = useNavigate()
+
   const form = useForm({
     defaultValues: {
       email: 'bebebe@gmail.com',
@@ -23,8 +28,13 @@ export function RegistrationForm() {
     validators: {
       onChange: registrationSchema,
     },
-    onSubmit: ({ value }) => {
-      register({ data: value })
+    onSubmit: async ({ value }) => {
+      try {
+        await register({ data: value })
+        navigate({ to: '/', search: { success: undefined } })
+      } catch (error) {
+        toast.error((error as Error).message)
+      }
     },
   })
 
