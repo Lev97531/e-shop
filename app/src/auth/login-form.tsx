@@ -2,35 +2,28 @@ import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { FieldError } from '../components/field-error'
-import { register } from './registration'
+import { login } from './login'
+import { FieldError } from '~/components/field-error'
 
-export const registrationSchema = z
-  .object({
-    email: z.email('Neplatná e-mailová adresa'),
-    password: z.string().min(8, 'Příliš malý: očekávaný řetězec má >=8 znaků'),
-    confirmPassword: z.string().min(8, 'Příliš malý: očekávaný řetězec má >=8 znaků'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Hesla se neshodují',
-    path: ['confirmPassword'], // error shows on confirmPassword field
-  })
+export const loginSchema = z.object({
+  email: z.email('Neplatná e-mailová adresa'),
+  password: z.string().min(8, 'Příliš malý: očekávaný řetězec má >=8 znaků'),
+})
 
-export function RegistrationForm() {
+export function LoginForm() {
   const navigate = useNavigate()
 
   const form = useForm({
     defaultValues: {
       email: 'bebebe@gmail.com',
       password: '12345678',
-      confirmPassword: '12345678',
     },
     validators: {
-      onChange: registrationSchema,
+      onChange: loginSchema,
     },
     onSubmit: async ({ value }) => {
       try {
-        await register({ data: value })
+        await login({ data: value })
         navigate({ to: '/', search: { success: undefined } })
       } catch (error) {
         toast.error((error as Error).message)
@@ -77,36 +70,23 @@ export function RegistrationForm() {
                     </>
                   )}
                 />
-                <form.Field
-                  name="confirmPassword"
-                  children={(field) => (
-                    <>
-                      <label className="label">Potvrdit heslo</label>
-                      <input
-                        type="password"
-                        className="input w-full"
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                      />
-                      <FieldError field={field} />
-                    </>
-                  )}
-                />
+                <div>
+                  <a className="link link-hover">Zapomenuté heslo?</a>
+                </div>
                 <button
                   className="btn btn-neutral mt-4"
                   onClick={() => {
                     form.handleSubmit()
                   }}
                 >
-                  Zaregistrovat se
+                  Přihlásit se
                 </button>
               </fieldset>
               <fieldset className="fieldset">
                 <div>
-                  <span>Už máte účet? </span>
-                  <Link className="link link-hover" to={'/login'}>
-                    Přihlásit se
+                  <span>Nemáte účet? </span>
+                  <Link className="link link-hover" to={'/register'}>
+                    Zaregistrovat se
                   </Link>
                 </div>
               </fieldset>
