@@ -4,9 +4,9 @@ import { PropsWithChildren } from 'react'
 import { Stripe } from 'stripe'
 import { decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 import { useShoppingCart } from '~/cart/useShoppingCart'
-import { formatPrice } from '~/routes'
 import NA from '~/shared/NA.jpg'
 import { Dialog } from './Dialog'
+import { formatPrice } from '~/shared/format-price'
 
 type CheckoutItem = { id: number; quantity: number }
 

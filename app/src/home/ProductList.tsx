@@ -1,29 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { Prisma, prisma } from 'prisma'
-import { useEffect } from 'react'
+import { Link } from '@tanstack/react-router'
+import { PropsWithChildren, useEffect } from 'react'
 import { toast } from 'sonner'
 import { addToCart, clearCart } from '~/cart/cart'
 import NA from '~/shared/NA.jpg'
+import { formatPrice } from '~/shared/format-price'
+import { Product } from '~/shared/types'
 
-const loadProducts = createServerFn().handler(async () => {
-  return await prisma.product.findMany()
-})
-
-export const Route = createFileRoute('/')({
-  component: RouteComponent,
-  loader: async () => {
-    return { products: await loadProducts() }
-  },
-  validateSearch: (search) => ({
-    success: search.success as boolean | undefined,
-  }),
-})
-
-function RouteComponent() {
-  const { products } = Route.useLoaderData()
-  const { success } = Route.useSearch()
-
+export function ProductList({ products, success, children }: PropsWithChildren<{ products: Product[]; success?: boolean }>) {
   useEffect(() => {
     if (success) {
       toast(
@@ -40,13 +23,14 @@ function RouteComponent() {
   return (
     <div className="inline-flex flex-wrap gap-4 mx-auto">
       {products.map((product) => (
-        <Product key={product.id} product={product} />
+        <ProductItem key={product.id} product={product} />
       ))}
+      {children}
     </div>
   )
 }
 
-function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
+function ProductItem({ product }: { product: Product }) {
   return (
     <div className="card bg-base-200 w-96 shadow-sm">
       <figure className="mt-4">
@@ -57,6 +41,14 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
         <p>{product.description}</p>
         <div className="card-actions justify-end">
           <p className="font-bold text-2xl">{formatPrice(product.priceCents)},-</p>
+          <Link
+            className="btn btn-primary"
+            to="/$productSlug"
+            params={{ productSlug: product.slug }}
+            search={{ success: undefined }}
+          >
+            Show details
+          </Link>
           <button
             className="btn btn-primary"
             onClick={() => {
@@ -70,15 +62,4 @@ function Product({ product }: { product: Prisma.ProductGetPayload<{}> }) {
       </div>
     </div>
   )
-}
-
-export function formatPrice(cents?: number) {
-  if (!cents) {
-    return 'N/A'
-  }
-
-  const crowns = Math.round(cents / 100)
-  const formatted = crowns.toLocaleString('cs-CZ').replace(/\s/g, '\u00A0')
-
-  return formatted
 }

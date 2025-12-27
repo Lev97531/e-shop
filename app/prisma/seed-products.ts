@@ -11,6 +11,7 @@ export const seedProducts = async () => {
     data: [
       {
         id: 1,
+        slug: 'samsung-galaxy-a52-128gb',
         name: 'Samsung Galaxy A52 128 GB',
         priceCents: 3_290_00,
         description:
@@ -19,6 +20,7 @@ export const seedProducts = async () => {
       },
       {
         id: 2,
+        slug: 'apple-iphone-16-128gb',
         name: 'Apple iPhone 16 128 GB',
         priceCents: 18_188_00,
         description:
@@ -27,6 +29,7 @@ export const seedProducts = async () => {
       },
       {
         id: 3,
+        slug: 'samsung-galaxy-a52s-5g-128gb',
         name: 'Samsung Galaxy A52s 5G 128 GB',
         priceCents: 4_190_00,
         description:
@@ -35,6 +38,7 @@ export const seedProducts = async () => {
       },
       {
         id: 4,
+        slug: 'apple-iphone-16-plus-128gb',
         name: 'Apple iPhone 16 Plus 128 GB',
         priceCents: 21_778_00,
         description:
@@ -43,6 +47,7 @@ export const seedProducts = async () => {
       },
       {
         id: 5,
+        slug: 'apple-iphone-16-pro-128gb',
         name: 'Apple iPhone 16 Pro 128 GB',
         priceCents: 27_191_00,
         description:

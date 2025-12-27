@@ -14,7 +14,6 @@ export const Header = () => {
           onClick={() => (document.getElementById('shopping-cart') as HTMLDialogElement)?.showModal()}
         >
           <img src={cartSvg} width={32} />
-          {/* {cartSvg} */}
 
           <div className="badge badge-secondary badge-sm -ml-5 -mt-7">{shoppingCart.grandTotalQuantity}</div>
         </button>

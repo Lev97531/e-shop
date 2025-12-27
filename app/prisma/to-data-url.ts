@@ -1,7 +1,7 @@
 import { join, extname } from 'node:path'
 import fs from 'node:fs/promises'
 
-const mime = {
+const mime: Record<string, string> = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
@@ -15,6 +15,9 @@ export async function toDataURL(fileName: string) {
 
   const ext = extname(filePath)
   const type = mime[ext]
+  if (!type) {
+    throw new Error(`Unsupported file type: ${ext}`)
+  }
 
   return `data:${type};base64,${base64}`
 }
