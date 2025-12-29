@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { PropsWithChildren } from 'react'
-import { ModalDialog } from '~/components/modalDialog'
+import { ModalDialog } from '~/components/ModalDialog'
 import { Cart } from '~/home/Cart'
 
 export const Route = createFileRoute('/_products/cart')({

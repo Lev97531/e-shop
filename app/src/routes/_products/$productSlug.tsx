@@ -1,16 +1,40 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { ModalDialog } from '~/components/modalDialog'
+import { createFileRoute, notFound } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { prisma } from 'prisma'
+import z from 'zod'
+import { ModalDialog } from '~/components/ModalDialog'
+import { ProductDetails } from '~/home/product-details/ProductDetails'
+
+const loadProductSchema = z.object({
+  productSlug: z.string(),
+})
+
+export const loadProduct = createServerFn()
+  .inputValidator(loadProductSchema)
+  .handler(async ({ data: { productSlug } }) => {
+    const product = await prisma.product.findUnique({ where: { slug: productSlug } })
+    if (!product) {
+      throw notFound()
+    }
+
+    return product
+  })
 
 export const Route = createFileRoute('/_products/$productSlug')({
   component: RouteComponent,
   loader: async ({ params: { productSlug } }) => {
-    console.log(productSlug)
-    // return { products: await loadProducts() }
+    return await loadProduct({ data: { productSlug } })
   },
+  notFoundComponent: () => <ModalDialog>Produkt neexistuje</ModalDialog>,
 })
 
 function RouteComponent() {
-  const { productSlug } = Route.useParams()
+  const product = Route.useLoaderData()
+  console.log(product)
 
-  return <ModalDialog>productSlug: {productSlug}</ModalDialog>
+  return (
+    <ModalDialog dialogClass="max-w-4xl">
+      <ProductDetails product={product} />
+    </ModalDialog>
+  )
 }
