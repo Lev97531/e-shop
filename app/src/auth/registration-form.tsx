@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { FieldError } from '../components/field-error'
+import { FieldError } from '../components/FieldError'
 import { register } from './registration'
 
 export const registrationSchema = z

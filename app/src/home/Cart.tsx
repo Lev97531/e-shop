@@ -1,12 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
 import { prisma } from 'prisma'
-import { PropsWithChildren } from 'react'
 import { Stripe } from 'stripe'
 import { decreaseQuantity, deleteFromCart, increaseQuantity } from '~/cart/cart'
 import { useShoppingCart } from '~/cart/useShoppingCart'
-import NA from '~/shared/NA.jpg'
-import { Dialog } from './Dialog'
 import { formatPrice } from '~/shared/format-price'
+import NA from '~/shared/NA.jpg'
 
 type CheckoutItem = { id: number; quantity: number }
 
@@ -54,15 +52,11 @@ export const Cart = () => {
   const shoppingCart = useShoppingCart()
 
   if (!shoppingCart.products.length) {
-    return (
-      <CartDialog>
-        <div className="mt-4 text-2xl">Košík je prázdný</div>
-      </CartDialog>
-    )
+    return <div className="mt-4 text-2xl">Košík je prázdný</div>
   }
 
   return (
-    <CartDialog>
+    <>
       <div className="mt-4 flex flex-col gap-4">
         {shoppingCart.products.map((item, i) => (
           <div key={i} className="flex gap-4 bg-base-200 p-4 rounded-xl">
@@ -119,15 +113,6 @@ export const Cart = () => {
           </button>
         </div>
       </div>
-    </CartDialog>
-  )
-}
-
-function CartDialog({ children }: PropsWithChildren) {
-  return (
-    <Dialog>
-      <div className="text-4xl font-bold">Košík</div>
-      {children}
-    </Dialog>
+    </>
   )
 }

@@ -3,7 +3,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { login } from './login'
-import { FieldError } from '~/components/field-error'
+import { FieldError } from '~/components/FieldError'
 
 export const loginSchema = z.object({
   email: z.email('Neplatná e-mailová adresa'),

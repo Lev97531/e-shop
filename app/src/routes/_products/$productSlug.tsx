@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ProductDetailsDialog } from '~/home/product-details/ProductDetailsDialog'
+import { ModalDialog } from '~/components/modalDialog'
 
 export const Route = createFileRoute('/_products/$productSlug')({
   component: RouteComponent,
@@ -12,5 +12,5 @@ export const Route = createFileRoute('/_products/$productSlug')({
 function RouteComponent() {
   const { productSlug } = Route.useParams()
 
-  return <ProductDetailsDialog>productSlug: {productSlug}</ProductDetailsDialog>
+  return <ModalDialog>productSlug: {productSlug}</ModalDialog>
 }

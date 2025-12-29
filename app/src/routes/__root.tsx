@@ -19,7 +19,10 @@ export const Route = createRootRoute({
         title: 'TanStack Start Starter',
       },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
+    links: [
+      { rel: 'stylesheet', href: appCss },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+    ],
   }),
   component: RootComponent,
   notFoundComponent: () => <h1>Not Found</h1>,
