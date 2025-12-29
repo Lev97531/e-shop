@@ -15,6 +15,7 @@ export const Route = createFileRoute('/_products')({
   validateSearch: (search) => ({
     success: search.success as boolean | undefined,
   }),
+  notFoundComponent: () => <h1>Not Found</h1>,
 })
 
 function RouteComponent() {

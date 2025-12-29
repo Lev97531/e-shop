@@ -11,7 +11,8 @@
     "db-migrate": "prisma migrate dev",
     "db-seed": "prisma db seed",
     "db-pull": "prisma db pull",
-    "test-email": "node --env-file=.env src/smtp-test.ts"
+    "test-email": "node --env-file=.env src/smtp-test.ts",
+    "test": "node --test --watch src/**/*.test.ts"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.2.0",

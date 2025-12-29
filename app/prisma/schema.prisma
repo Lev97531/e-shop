@@ -21,11 +21,22 @@ model User {
   email String @unique
   
   emailAuth EmailAuth?
+  session Session[]
 }
 
 model EmailAuth {
   userId Int @id
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   passwordHash String
   passwordSalt String
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    Int
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

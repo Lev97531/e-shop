@@ -30,7 +30,6 @@ export const Route = createFileRoute('/_products/$productSlug')({
 
 function RouteComponent() {
   const product = Route.useLoaderData()
-  console.log(product)
 
   return (
     <ModalDialog dialogClass="max-w-4xl">

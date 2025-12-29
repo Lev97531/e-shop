@@ -1,18 +1,16 @@
 import { useForm } from '@tanstack/react-form'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { login } from './login'
 import { FieldError } from '~/components/FieldError'
+import { login } from './login'
 
 export const loginSchema = z.object({
   email: z.email('Neplatná e-mailová adresa'),
   password: z.string().min(8, 'Příliš malý: očekávaný řetězec má >=8 znaků'),
 })
 
-export function LoginForm() {
-  const navigate = useNavigate()
-
+export function LoginForm({onLogin}: { onLogin: () => Promise<void> }) {
   const form = useForm({
     defaultValues: {
       email: 'bebebe@gmail.com',
@@ -24,8 +22,9 @@ export function LoginForm() {
     onSubmit: async ({ value }) => {
       try {
         await login({ data: value })
-        navigate({ to: '/', search: { success: undefined } })
+        await onLogin()
       } catch (error) {
+        console.error(error)
         toast.error((error as Error).message)
       }
     },
