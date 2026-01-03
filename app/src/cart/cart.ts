@@ -10,7 +10,7 @@ export let shoppingCart: { products: CartItem[]; grandTotalCents: number; grandT
   grandTotalQuantity: 0,
 }
 
-const cartLoaded = Promise.withResolvers<void>()
+export const cartLoaded = Promise.withResolvers<void>()
 
 function updateProductsTotal(products: CartItem[]) {
   const grandTotalCents = products.reduce((total, item) => total + item.totalCents, 0)
