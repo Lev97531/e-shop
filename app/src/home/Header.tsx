@@ -10,7 +10,7 @@ export const Header = () => {
     <div className="h-24 bg-[#22223b]">
       Header
       <div>
-        <button className="btn btn-ghost h-auto" onClick={() => navigate({ to: '/cart', search: { success: undefined } })}>
+        <button className="btn btn-ghost h-auto" onClick={() => navigate({ to: '/cart' })}>
           <img src={cartSvg} width={32} />
 
           <div className="badge badge-secondary badge-sm -ml-5 -mt-7">{shoppingCart.grandTotalQuantity}</div>

@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, redirect, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { FieldError } from '../components/FieldError'
@@ -31,7 +31,7 @@ export function RegistrationForm() {
     onSubmit: async ({ value }) => {
       try {
         await register({ data: value })
-        navigate({ to: '/', search: { success: undefined } })
+        navigate({ to: '/' })
       } catch (error) {
         toast.error((error as Error).message)
       }
@@ -105,7 +105,7 @@ export function RegistrationForm() {
               <fieldset className="fieldset">
                 <div>
                   <span>Už máte účet? </span>
-                  <Link className="link link-hover" to={'/login'}>
+                  <Link className="link link-hover" to={'/login'} search={{ redirect: undefined }}>
                     Přihlásit se
                   </Link>
                 </div>

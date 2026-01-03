@@ -12,18 +12,14 @@ export const Route = createFileRoute('/_products')({
   loader: async () => {
     return { products: await loadProducts() }
   },
-  validateSearch: (search) => ({
-    success: search.success as boolean | undefined,
-  }),
   notFoundComponent: () => <h1>Not Found</h1>,
 })
 
 function RouteComponent() {
   const { products } = Route.useLoaderData()
-  const { success } = Route.useSearch()
 
   return (
-    <ProductList products={products} success={success}>
+    <ProductList products={products}>
       <Outlet />
     </ProductList>
   )

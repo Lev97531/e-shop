@@ -41,7 +41,7 @@ const checkout = createServerFn({ method: 'POST' })
       payment_method_types: ['card'],
       customer_email: 'test@example.com',
       line_items: lineItems,
-      success_url: `${baseUrl}?success=true`,
+      success_url: `${baseUrl}/order-success`,
       cancel_url: `${baseUrl}`,
     })
 

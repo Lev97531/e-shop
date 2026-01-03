@@ -6,20 +6,7 @@ import NA from '~/shared/NA.jpg'
 import { formatPrice } from '~/shared/format-price'
 import { Product } from '~/shared/types'
 
-export function ProductList({ products, success, children }: PropsWithChildren<{ products: Product[]; success?: boolean }>) {
-  useEffect(() => {
-    if (success) {
-      toast(
-        <div className="text-5xl flex flex-col gap-4">
-          <div>Děkujeme za nakup!</div>
-          <div className="mx-auto text-7xl">🎉</div>
-        </div>,
-        { duration: 10_000 }
-      )
-      clearCart()
-    }
-  }, [success])
-
+export function ProductList({ products, children }: PropsWithChildren<{ products: Product[] }>) {
   return (
     <div className="inline-flex flex-wrap gap-4 mx-auto">
       {products.map((product) => (
@@ -41,12 +28,7 @@ function ProductItem({ product }: { product: Product }) {
         <p>{product.description}</p>
         <div className="card-actions justify-end">
           <p className="font-bold text-2xl">{formatPrice(product.priceCents)},-</p>
-          <Link
-            className="btn btn-primary"
-            to="/$productSlug"
-            params={{ productSlug: product.slug }}
-            search={{ success: undefined }}
-          >
+          <Link className="btn btn-primary" to="/$productSlug" params={{ productSlug: product.slug }}>
             Show details
           </Link>
           <button

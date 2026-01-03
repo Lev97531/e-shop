@@ -21,7 +21,7 @@ function RouteComponent() {
           return
         }
 
-        navigate({ to: '/', search: { success: undefined } })
+        navigate({ to: '/' })
       }}
     />
   )
