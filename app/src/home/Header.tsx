@@ -4,7 +4,7 @@ import cartSvg from '../shared/shopping-cart-dark.svg'
 
 export const Header = () => {
   const navigate = useNavigate()
-  const shoppingCart = useShoppingCart()
+  const { totalProducts } = useShoppingCart()
 
   return (
     <div className="h-24 bg-[#22223b]">
@@ -13,7 +13,7 @@ export const Header = () => {
         <button className="btn btn-ghost h-auto" onClick={() => navigate({ to: '/cart' })}>
           <img src={cartSvg} width={32} />
 
-          <div className="badge badge-secondary badge-sm -ml-5 -mt-7">{shoppingCart.grandTotalQuantity}</div>
+          <div className="badge badge-secondary badge-sm -ml-5 -mt-7">{totalProducts}</div>
         </button>
       </div>
     </div>

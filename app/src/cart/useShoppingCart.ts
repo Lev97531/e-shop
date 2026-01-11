@@ -1,38 +1,61 @@
-import { useEffect, useSyncExternalStore } from 'react'
-import { loadCartItems, shoppingCart } from './cart'
+import { useCallback, useMemo } from 'react'
+import { cartSettings } from './stored-cart-settings'
+import { useStoredCartProducts } from './useStoredCartProducts'
 
-type Callback = () => void
+export const useShoppingCart = () => {
+  const { products, saveProducts } = useStoredCartProducts()
 
-const subscribers: Callback[] = []
+  const totalProducts = useMemo(() => products.reduce((total, item) => total + item.quantity, 0), [products])
 
-export function notifyCartSubscribers() {
-  subscribers.forEach((callback) => callback())
-}
+  const addProductToCart = useCallback(
+    (productId: number) => {
+      const existingItem = products.find((item) => item.id === productId)
+      if (!existingItem) {
+        saveProducts([...products, { id: productId, quantity: 1 }])
+        return true
+      }
 
-export function useShoppingCart() {
-  useEffect(() => {
-    loadCartItems()
-  }, [])
+      if (existingItem.quantity >= cartSettings.maxProductQuantity) {
+        return false
+      }
 
-  return useSyncExternalStore(
-    (subscription) => subscribe(subscription),
-    () => shoppingCart,
-    () => shoppingCart
+      existingItem.quantity++
+      saveProducts(products)
+
+      return true
+    },
+    [products, saveProducts]
   )
-}
 
-function subscribe(callback: Callback) {
-  subscribers.push(callback)
-  return () => {
-    unsubscribe(callback)
-  }
-}
+  const removeProductFromCart = useCallback(
+    (productId: number) => {
+      const newProducts = products.filter((item) => item.id !== productId)
+      saveProducts(newProducts)
+    },
+    [products, saveProducts]
+  )
 
-function unsubscribe(callback: Callback) {
-  const indexToDelete = subscribers.indexOf(callback)
-  if (indexToDelete == -1) {
-    return
-  }
+  const decreaseProductInCartQuantity = useCallback(
+    (productId: number) => {
+      const existingItem = products.find((item) => item.id === productId)
+      if (!existingItem) {
+        return
+      }
 
-  subscribers.splice(subscribers.indexOf(callback), 1)
+      if (existingItem.quantity <= 1) {
+        removeProductFromCart(productId)
+        return
+      }
+
+      existingItem.quantity--
+      saveProducts(products)
+    },
+    [products, removeProductFromCart, saveProducts]
+  )
+
+  const clearCart = useCallback(() => {
+    saveProducts([])
+  }, [saveProducts])
+
+  return { products, totalProducts, addProductToCart, decreaseProductInCartQuantity, removeProductFromCart, clearCart }
 }

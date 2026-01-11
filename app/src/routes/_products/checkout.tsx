@@ -2,8 +2,7 @@ import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { getAuthUser } from '~/auth/get-auth-user'
-import { cartLoaded } from '~/cart/cart'
-import { checkout, CheckoutItem } from '~/cart/checkout'
+import { checkout } from '~/cart/checkout'
 import { useShoppingCart } from '~/cart/useShoppingCart'
 
 export const Route = createFileRoute('/_products/checkout')({
@@ -17,20 +16,14 @@ export const Route = createFileRoute('/_products/checkout')({
 })
 
 function RouteComponent() {
-  const shoppingCart = useShoppingCart()
+  const { products } = useShoppingCart()
   const navigate = useNavigate()
 
   const doCheckout = async () => {
-    await cartLoaded.promise
-
-    console.log('products:', shoppingCart.products)
-    if (shoppingCart.products.length === 0) {
+    if (products.length === 0) {
       return
     }
 
-    const products = shoppingCart.products.map(
-      (product) => ({ id: product.product.id, quantity: product.quantity } as CheckoutItem)
-    )
     const url = await checkout({ data: { products } })
 
     if (url !== null) {
@@ -44,7 +37,7 @@ function RouteComponent() {
 
   useEffect(() => {
     doCheckout()
-  }, [shoppingCart])
+  }, [])
 
   return null
 }

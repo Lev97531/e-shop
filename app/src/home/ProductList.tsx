@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
-import { PropsWithChildren, useEffect } from 'react'
+import { PropsWithChildren } from 'react'
 import { toast } from 'sonner'
-import { addToCart, clearCart } from '~/cart/cart'
+import { useShoppingCart } from '~/cart/useShoppingCart'
 import NA from '~/shared/NA.jpg'
 import { formatPrice } from '~/shared/format-price'
 import { Product } from '~/shared/types'
@@ -18,6 +18,8 @@ export function ProductList({ products, children }: PropsWithChildren<{ products
 }
 
 function ProductItem({ product }: { product: Product }) {
+  const { addProductToCart } = useShoppingCart()
+
   return (
     <div className="card bg-base-200 w-96 shadow-sm">
       <figure className="mt-4">
@@ -34,8 +36,8 @@ function ProductItem({ product }: { product: Product }) {
           <button
             className="btn btn-primary"
             onClick={() => {
+              addProductToCart(product.id)
               toast.success(`${product.name} uspšně byl přidan do košiku`)
-              addToCart(product)
             }}
           >
             Do košíku

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { clearCart } from '~/cart/cart'
+import { useShoppingCart } from '~/cart/useShoppingCart'
 
 export const Route = createFileRoute('/_products/order-success')({
   component: RouteComponent,
@@ -9,6 +9,7 @@ export const Route = createFileRoute('/_products/order-success')({
 
 function RouteComponent() {
   const navigate = useNavigate()
+  const { clearCart } = useShoppingCart()
 
   useEffect(() => {
     toast(

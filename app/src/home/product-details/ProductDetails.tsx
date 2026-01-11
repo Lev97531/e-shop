@@ -1,10 +1,12 @@
-import { Product } from '~/shared/types'
+import { toast } from 'sonner'
+import { useShoppingCart } from '~/cart/useShoppingCart'
 import NA from '~/shared/NA.jpg'
 import { formatPrice } from '~/shared/format-price'
-import { toast } from 'sonner'
-import { addToCart } from '~/cart/cart'
+import { Product } from '~/shared/types'
 
 export const ProductDetails = ({ product }: { product: Product }) => {
+  const { addProductToCart } = useShoppingCart()
+
   return (
     <form method="dialog" className="flex flex-col gap-4">
       <div className="flex gap-4 rounded-xl">
@@ -22,7 +24,7 @@ export const ProductDetails = ({ product }: { product: Product }) => {
           className="btn btn-primary h-12 text-xl"
           onClick={() => {
             toast.success(`${product.name} uspšně byl přidan do košiku`)
-            addToCart(product)
+            addProductToCart(product.id)
           }}
         >
           Do košíku
