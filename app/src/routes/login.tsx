@@ -1,11 +1,14 @@
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { z } from 'zod'
 import { LoginForm } from '~/auth/login-form'
+
+const searchSchema = z.object({
+  redirect: z.string().optional(),
+})
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
-  validateSearch: (search) => ({
-    redirect: search.redirect as string | undefined,
-  }),
+  validateSearch: searchSchema,
 })
 
 function RouteComponent() {
