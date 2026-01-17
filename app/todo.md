@@ -4,4 +4,4 @@ Plan:
 - Admin edit product form
 - Search
 
-- Sort and filter products
+- Sorft and filter products

@@ -14,19 +14,23 @@ model Product {
   priceCents  Int
   imageUrl    String?
   description String  @default("")
+  rating      Int?
+  isAvailable Boolean @default(true)
+  isOnSale    Boolean @default(false)
+  isNew       Boolean @default(false)
 }
 
 model User {
   id    Int    @id @default(autoincrement())
   email String @unique
-  
+
   emailAuth EmailAuth?
-  session Session[]
+  session   Session[]
 }
 
 model EmailAuth {
-  userId Int @id
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int    @id
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   passwordHash String
   passwordSalt String
 }
