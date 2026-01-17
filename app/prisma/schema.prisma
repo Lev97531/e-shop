@@ -14,7 +14,18 @@ model Product {
   priceCents  Int
   imageUrl    String?
   description String  @default("")
+
+  attributes ProductAttributes?
+}
+
+model ProductAttributes {
+  productId Int     @id
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   rating      Int?
+  category    String?
+  size        String?
+  color       String?
   isAvailable Boolean @default(true)
   isOnSale    Boolean @default(false)
   isNew       Boolean @default(false)

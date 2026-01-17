@@ -7,54 +7,249 @@ export const seedProducts = async () => {
     return
   }
 
-  await prisma.product.createMany({
-    data: [
-      {
-        id: 1,
-        slug: 'samsung-galaxy-a52-128gb',
-        name: 'Samsung Galaxy A52 128 GB',
-        priceCents: 3_290_00,
-        description:
-          'A mid-range smartphone featuring a 6.5-inch Super AMOLED display, quad camera system, and long-lasting 4500 mAh battery. Offers smooth performance for everyday use with 128 GB storage.',
-        imageUrl: await toDataURL('Samsung Galaxy A52.jpg'),
+  await prisma.product.create({
+    data: {
+      slug: 'classic-logo-cap',
+      name: 'Classic Logo Cap',
+      priceCents: 1999,
+      description: 'Minimalist cotton cap with embroidered logo.',
+      imageUrl: await toDataURL('Classic Logo Cap.jpg'),
+      attributes: {
+        create: {
+          category: 'Hats',
+          color: 'Black',
+          size: 'One Size',
+          rating: 4,
+          isNew: true,
+        },
       },
-      {
-        id: 2,
-        slug: 'apple-iphone-16-128gb',
-        name: 'Apple iPhone 16 128 GB',
-        priceCents: 18_188_00,
-        description:
-          'Apple’s latest generation iPhone with an advanced dual-camera system, A18 chip for exceptional speed, and a bright HDR display. Sleek design and excellent battery life in a compact package.',
-        imageUrl: await toDataURL('Apple iPhone 16.jpg'),
-      },
-      {
-        id: 3,
-        slug: 'samsung-galaxy-a52s-5g-128gb',
-        name: 'Samsung Galaxy A52s 5G 128 GB',
-        priceCents: 4_190_00,
-        description:
-          'An upgraded version of the Galaxy A52 with 5G support, Snapdragon 778G processor, and a 120 Hz Super AMOLED display. Ideal for gaming, streaming, and fast connectivity.',
-        imageUrl: await toDataURL('Samsung Galaxy A52s.jpg'),
-      },
-      {
-        id: 4,
-        slug: 'apple-iphone-16-plus-128gb',
-        name: 'Apple iPhone 16 Plus 128 GB',
-        priceCents: 21_778_00,
-        description:
-          'A larger version of the iPhone 16 featuring a 6.7-inch HDR display, improved battery life, and powerful A18 performance. Perfect for media consumption and productivity.',
-        imageUrl: await toDataURL('Apple iPhone 16 Plus.jpg'),
-      },
-      {
-        id: 5,
-        slug: 'apple-iphone-16-pro-128gb',
-        name: 'Apple iPhone 16 Pro 128 GB',
-        priceCents: 27_191_00,
-        description:
-          'A premium flagship with a titanium frame, ProMotion display, and cutting-edge triple-camera system. Powered by the A18 Pro chip for top-tier performance and advanced photography.',
-      },
-    ],
+    },
   })
 
-  console.log('- seeded items')
+  await prisma.product.create({
+    data: {
+      slug: 'winter-beanie',
+      name: 'Winter Beanie',
+      priceCents: 1499,
+      description: 'Warm knitted beanie for cold weather.',
+      imageUrl: await toDataURL('Winter Beanie.jpg'),
+      attributes: {
+        create: {
+          category: 'Hats',
+          color: 'Grey',
+          size: 'One Size',
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'basic-white-tshirt',
+      name: 'Basic White T-Shirt',
+      priceCents: 2499,
+      description: 'Premium cotton t-shirt with relaxed fit.',
+      imageUrl: await toDataURL('Basic White T-Shirt.jpg'),
+      attributes: {
+        create: {
+          category: 'T-Shirt',
+          color: 'White',
+          size: 'M',
+          rating: 5,
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'graphic-street-tee',
+      name: 'Graphic Street Tee',
+      priceCents: 2999,
+      description: 'Streetwear t-shirt with bold graphic print.',
+      imageUrl: await toDataURL('Graphic Street Tee.jpg'),
+      attributes: {
+        create: {
+          category: 'T-Shirt',
+          color: 'Black',
+          size: 'L',
+          isOnSale: true,
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'oversized-vintage-tee',
+      name: 'Oversized Vintage Tee',
+      priceCents: 2799,
+      description: 'Oversized t-shirt inspired by vintage fashion.',
+      imageUrl: await toDataURL('Oversized Vintage Tee.jpg'),
+      attributes: {
+        create: {
+          category: 'T-Shirt',
+          color: 'Beige',
+          size: 'XL',
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'basic-hoodie',
+      name: 'Basic Hoodie',
+      priceCents: 4999,
+      description: 'Comfortable hoodie with soft fleece interior.',
+      imageUrl: await toDataURL('Basic Hoodie.jpg'),
+      attributes: {
+        create: {
+          category: 'Hoodie',
+          color: 'Grey',
+          size: 'L',
+          rating: 5,
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'zip-up-hoodie',
+      name: 'Zip-Up Hoodie',
+      priceCents: 5499,
+      description: 'Full-zip hoodie for everyday wear.',
+      imageUrl: await toDataURL('Zip-Up Hoodie.jpg'),
+      attributes: {
+        create: {
+          category: 'Hoodie',
+          color: 'Black',
+          size: 'M',
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'slim-fit-jeans',
+      name: 'Slim Fit Jeans',
+      priceCents: 5999,
+      description: 'Stretch denim jeans with slim fit cut.',
+      imageUrl: await toDataURL('Slim Fit Jeans.jpg'),
+      attributes: {
+        create: {
+          category: 'Pants',
+          color: 'Dark Blue',
+          size: '32',
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'cargo-pants',
+      name: 'Cargo Pants',
+      priceCents: 6499,
+      description: 'Utility cargo pants with multiple pockets.',
+      imageUrl: await toDataURL('Cargo Pants.jpg'),
+      attributes: {
+        create: {
+          category: 'Pants',
+          color: 'Olive',
+          size: '34',
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'casual-summer-shorts',
+      name: 'Casual Summer Shorts',
+      priceCents: 2999,
+      description: 'Lightweight shorts ideal for summer days.',
+      imageUrl: await toDataURL('Casual Summer Shorts.jpg'),
+      attributes: {
+        create: {
+          category: 'Shorts',
+          color: 'Khaki',
+          size: 'M',
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'sport-shorts',
+      name: 'Sport Shorts',
+      priceCents: 2499,
+      description: 'Breathable shorts for training and running.',
+      imageUrl: await toDataURL('Sport Shorts.jpg'),
+      attributes: {
+        create: {
+          category: 'Shorts',
+          color: 'Black',
+          size: 'L',
+          isOnSale: true,
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'classic-sneakers',
+      name: 'Classic Sneakers',
+      priceCents: 7999,
+      description: 'Timeless low-top sneakers with rubber sole.',
+      imageUrl: await toDataURL('Classic Sneakers.jpg'),
+      attributes: {
+        create: {
+          category: 'Shoes',
+          color: 'White',
+          size: '42',
+          rating: 5,
+        },
+      },
+    },
+  })
+
+  await prisma.product.create({
+    data: {
+      slug: 'running-shoes',
+      name: 'Running Shoes',
+      priceCents: 8999,
+      description: 'Lightweight running shoes with cushioned sole.',
+      imageUrl: await toDataURL('Running Shoes.jpg'),
+      attributes: {
+        create: {
+          category: 'Shoes',
+          color: 'Black/Red',
+          size: '43',
+        },
+      },
+    },
+  })
+
+   await prisma.product.create({
+     data: {
+       slug: 'canvas-belt',
+       name: 'Canvas Belt',
+       priceCents: 1699,
+       description: 'Durable canvas belt with metal buckle.',
+       attributes: {
+         create: {
+           category: 'Accessories',
+           color: 'Black',
+           size: 'One Size',
+         },
+       },
+     },
+   })
 }
+
+console.log('- seeded items')
