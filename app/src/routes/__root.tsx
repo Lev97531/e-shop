@@ -31,9 +31,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <Layout>
+      <div className='className="flex flex-col max-w-7xl mx-auto'>
         <Outlet />
-      </Layout>
+      </div>
     </RootDocument>
   )
 }
