@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect, Link } from '@tanstack/react-router'
 import { getAuthUser } from '~/auth/get-auth-user'
 
 export const Route = createFileRoute('/admin')({
@@ -14,5 +14,26 @@ export const Route = createFileRoute('/admin')({
 })
 
 function RouteComponent() {
-  return <Outlet />
+  return (
+    <div className="flex gap-6">
+      <aside className="w-56 shrink-0">
+        <nav className="menu bg-base-200 rounded-box p-2">
+          <ul>
+            <li>
+              <Link to="/admin/listProducts">Products</Link>
+            </li>
+            <li>
+              <Link to="/admin/users">Users</Link>
+            </li>
+            <li>
+              <Link to="/admin/orders">Orders</Link>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
+  )
 }
