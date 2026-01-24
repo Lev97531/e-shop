@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { prisma } from 'prisma'
-import z from 'zod'
+import { z } from 'zod'
 import { ProductsTable } from '~/admin/ProductsTable'
 import React from 'react'
 import Fuse from 'fuse.js'
@@ -113,7 +113,9 @@ function RouteComponent() {
             Prev
           </button>
         )}
-        <div className="opacity-80">Page {page} of {totalPages}</div>
+        <div className="opacity-80">
+          Page {page} of {totalPages}
+        </div>
         {nextPage ? (
           <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: nextPage, q: search.q }}>
             Next
@@ -124,6 +126,7 @@ function RouteComponent() {
           </button>
         )}
       </div>
+      <Outlet />
     </div>
   )
 }

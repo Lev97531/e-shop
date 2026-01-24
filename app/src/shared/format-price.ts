@@ -3,7 +3,7 @@ export function formatPrice(cents?: number, round = true) {
     return 'N/A'
   }
 
-  const crowns = round ? cents / 100 : Math.round(cents / 100)
+  const crowns = round ? Math.round(cents / 100) : cents / 100  
 
   const formatted = crowns
     .toLocaleString('cs-CZ', {

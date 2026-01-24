@@ -3,6 +3,7 @@ import { Route } from '../routes/admin/listProducts'
 
 export const ProductsTable = () => {
   const { products } = Route.useLoaderData()
+  const navigate = Route.useNavigate()
   return (
     <div>
       <table className="table table-zebra">
@@ -22,7 +23,7 @@ export const ProductsTable = () => {
               key={product.id}
               className="hover:bg-base-300 cursor-pointer"
               onClick={() => {
-                console.log(132)
+                navigate({ to: '/admin/listProducts/$id/edit', params: { id: product.id } })
               }}
             >
               <th>{product.id}</th>
