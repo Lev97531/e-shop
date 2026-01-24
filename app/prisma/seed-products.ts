@@ -11,7 +11,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'classic-logo-cap',
       name: 'Classic Logo Cap',
-      priceCents: 19999,
+      priceCents: 19900,
       description: 'Minimalist cotton cap with embroidered logo.',
       imageUrl: await toDataURL('Classic Logo Cap.jpg'),
       attributes: {
@@ -30,7 +30,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'winter-beanie',
       name: 'Winter Beanie',
-      priceCents: 14999,
+      priceCents: 14900,
       description: 'Warm knitted beanie for cold weather.',
       imageUrl: await toDataURL('Winter Beanie.jpg'),
       attributes: {
@@ -47,7 +47,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'basic-white-tshirt',
       name: 'Basic White T-Shirt',
-      priceCents: 24999,
+      priceCents: 24900,
       description: 'Premium cotton t-shirt with relaxed fit.',
       imageUrl: await toDataURL('Basic White T-Shirt.jpg'),
       attributes: {
@@ -65,7 +65,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'graphic-street-tee',
       name: 'Graphic Street Tee',
-      priceCents: 29999,
+      priceCents: 29900,
       description: 'Streetwear t-shirt with bold graphic print.',
       imageUrl: await toDataURL('Graphic Street Tee.jpg'),
       attributes: {
@@ -83,7 +83,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'oversized-vintage-tee',
       name: 'Oversized Vintage Tee',
-      priceCents: 27999,
+      priceCents: 27900,
       description: 'Oversized t-shirt inspired by vintage fashion.',
       imageUrl: await toDataURL('Oversized Vintage Tee.jpg'),
       attributes: {
@@ -100,7 +100,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'basic-hoodie',
       name: 'Basic Hoodie',
-      priceCents: 49999,
+      priceCents: 49900,
       description: 'Comfortable hoodie with soft fleece interior.',
       imageUrl: await toDataURL('Basic Hoodie.jpg'),
       attributes: {
@@ -118,7 +118,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'zip-up-hoodie',
       name: 'Zip-Up Hoodie',
-      priceCents: 54999,
+      priceCents: 54900,
       description: 'Full-zip hoodie for everyday wear.',
       imageUrl: await toDataURL('Zip-Up Hoodie.jpg'),
       attributes: {
@@ -135,7 +135,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'slim-fit-jeans',
       name: 'Slim Fit Jeans',
-      priceCents: 59999,
+      priceCents: 59900,
       description: 'Stretch denim jeans with slim fit cut.',
       imageUrl: await toDataURL('Slim Fit Jeans.jpg'),
       attributes: {
@@ -152,7 +152,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'cargo-pants',
       name: 'Cargo Pants',
-      priceCents: 64999,
+      priceCents: 64900,
       description: 'Utility cargo pants with multiple pockets.',
       imageUrl: await toDataURL('Cargo Pants.jpg'),
       attributes: {
@@ -169,7 +169,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'casual-summer-shorts',
       name: 'Casual Summer Shorts',
-      priceCents: 29999,
+      priceCents: 29900,
       description: 'Lightweight shorts ideal for summer days.',
       imageUrl: await toDataURL('Casual Summer Shorts.jpg'),
       attributes: {
@@ -186,7 +186,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'sport-shorts',
       name: 'Sport Shorts',
-      priceCents: 24999,
+      priceCents: 24900,
       description: 'Breathable shorts for training and running.',
       imageUrl: await toDataURL('Sport Shorts.jpg'),
       attributes: {
@@ -204,7 +204,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'classic-sneakers',
       name: 'Classic Sneakers',
-      priceCents: 79999,
+      priceCents: 79900,
       description: 'Timeless low-top sneakers with rubber sole.',
       imageUrl: await toDataURL('Classic Sneakers.jpg'),
       attributes: {
@@ -222,7 +222,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'running-shoes',
       name: 'Running Shoes',
-      priceCents: 89999,
+      priceCents: 89900,
       description: 'Lightweight running shoes with cushioned sole.',
       imageUrl: await toDataURL('Running Shoes.jpg'),
       attributes: {
@@ -239,7 +239,7 @@ export const seedProducts = async () => {
     data: {
       slug: 'canvas-belt',
       name: 'Canvas Belt',
-      priceCents: 16999,
+      priceCents: 16900,
       description: 'Durable canvas belt with metal buckle.',
       attributes: {
         create: {

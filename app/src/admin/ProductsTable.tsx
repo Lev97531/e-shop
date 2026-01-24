@@ -1,3 +1,4 @@
+import { formatPrice } from '~/shared/format-price'
 import { Route } from '../routes/admin/listProducts'
 
 export const ProductsTable = () => {
@@ -17,10 +18,16 @@ export const ProductsTable = () => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id}>
+            <tr
+              key={product.id}
+              className="hover:bg-base-300 cursor-pointer"
+              onClick={() => {
+                console.log(132)
+              }}
+            >
               <th>{product.id}</th>
               <td>{product.name}</td>
-              <td>{product.priceCents}</td>
+              <td>{formatPrice(product.priceCents, false)}</td>
               <td className="text-center">{product.attributes?.isAvailable ? '✅' : '❌'}</td>
               <td className="text-center">{product.attributes?.isOnSale ? '✅' : '❌'}</td>
               <td className="text-center">{product.attributes?.isNew ? '✅' : '❌'}</td>

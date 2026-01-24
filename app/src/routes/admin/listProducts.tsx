@@ -4,6 +4,7 @@ import { prisma } from 'prisma'
 import z from 'zod'
 import { ProductsTable } from '~/admin/ProductsTable'
 import React from 'react'
+import Fuse from 'fuse.js'
 
 const productListPageSize = 10
 
@@ -22,18 +23,24 @@ const loadProducts = createServerFn()
   .handler(async ({ data: { page, q } }) => {
     const skip = (page - 1) * productListPageSize
 
-    const where = q
-      ? {
-          name: {
-            contains: q,
-          },
-        }
-      : undefined
+    const query = q?.trim()
 
-    console.log('123123', where)
+    if (query) {
+      const allProducts = await prisma.product.findMany({ include: { attributes: true } })
+      const fuse = new Fuse(allProducts, {
+        keys: ['name'],
+        threshold: 0.4,
+        ignoreLocation: true,
+      })
+      const matched = fuse.search(query).map((r) => r.item)
+      const count = matched.length
+      const totalPages = Math.max(1, Math.ceil(count / productListPageSize))
+      const products = matched.slice(skip, skip + productListPageSize)
+      return { products, totalPages }
+    }
 
-    const products = await prisma.product.findMany({ include: { attributes: true }, take: productListPageSize, skip, where })
-    const count = await prisma.product.count({ where })
+    const products = await prisma.product.findMany({ include: { attributes: true }, take: productListPageSize, skip })
+    const count = await prisma.product.count()
 
     const totalPages = Math.ceil(count / productListPageSize)
 
@@ -59,50 +66,64 @@ export const Route = createFileRoute('/admin/listProducts')({
 })
 
 function RouteComponent() {
-  const { totalPages, prevPage, nextPage } = Route.useLoaderData()
+  const { totalPages, prevPage, nextPage, page } = Route.useLoaderData()
   const navigate = Route.useNavigate()
   const search = Route.useSearch()
   const [query, setQuery] = React.useState(search.q ?? '')
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: query || undefined, page: 1 }) })
-  }
+  React.useEffect(() => {
+    const qTrim = query.trim()
+    const handle = setTimeout(() => {
+      if (qTrim.length >= 3) {
+        navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: qTrim, page: 1 }) })
+      } else if (qTrim.length === 0 && (search.q ?? '').trim().length > 0) {
+        navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
+      }
+    }, 500)
+    return () => clearTimeout(handle)
+  }, [query, navigate, search.q])
+
+  React.useEffect(() => {
+    setQuery((search.q ?? '').toString())
+  }, [search.q])
   return (
-    <>
-      <form onSubmit={onSubmit} className="flex items-center gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Search by name..."
-          className="input input-bordered"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button className="btn btn-primary" type="submit">
-          Search
-        </button>
-        {search.q ? (
-          <button
-            type="button"
-            className="btn"
-            onClick={() => navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })}
-          >
-            Clear
-          </button>
-        ) : null}
-      </form>
+    <div className="flex flex-col gap-4 mt-8">
+      <input
+        type="search"
+        placeholder="Search by name..."
+        className="input input-bordered"
+        value={query}
+        onChange={(e) => {
+          const value = e.target.value
+          setQuery(value)
+
+          if (value == '') {
+            navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
+          }
+        }}
+      />
       <ProductsTable />
-      <div>Total: {totalPages}</div>
-      {prevPage && (
-        <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: prevPage, q: search.q }}>
-          Prev
-        </Link>
-      )}
-      {nextPage && (
-        <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: nextPage, q: search.q }}>
-          Next
-        </Link>
-      )}
-    </>
+      <div className="flex items-center justify-center gap-3">
+        {prevPage ? (
+          <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: prevPage, q: search.q }}>
+            Prev
+          </Link>
+        ) : (
+          <button className="btn btn-primary btn-disabled" aria-disabled>
+            Prev
+          </button>
+        )}
+        <div className="opacity-80">Page {page} of {totalPages}</div>
+        {nextPage ? (
+          <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: nextPage, q: search.q }}>
+            Next
+          </Link>
+        ) : (
+          <button className="btn btn-primary btn-disabled" aria-disabled>
+            Next
+          </button>
+        )}
+      </div>
+    </div>
   )
 }
