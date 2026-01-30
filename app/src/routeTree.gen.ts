@@ -101,6 +101,7 @@ const AdminProductsIdEditRoute = AdminProductsIdEditRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof ProductsIndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -111,7 +112,6 @@ export interface FileRoutesByFullPath {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
-  '/': typeof ProductsIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/products/new': typeof AdminProductsNewRoute
   '/admin/products/$id/edit': typeof AdminProductsIdEditRoute
@@ -152,6 +152,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/admin'
     | '/login'
     | '/register'
@@ -162,7 +163,6 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
-    | '/'
     | '/admin/'
     | '/admin/products/new'
     | '/admin/products/$id/edit'
@@ -233,7 +233,7 @@ declare module '@tanstack/react-router' {
     '/_products': {
       id: '/_products'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }

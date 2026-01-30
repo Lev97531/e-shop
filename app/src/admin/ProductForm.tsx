@@ -73,14 +73,12 @@ export const createProduct = createServerFn({ method: 'POST' })
   })
 
 export function ProductForm({ product, onSuccess }: { product: Product; onSuccess?: () => void }) {
-  // const parsed = productFormSchema.parse(product)
   const parsed = product as unknown as z.infer<typeof productFormSchema>
 
   const form = useForm({
     defaultValues: parsed,
     validators: {
       onChange: productFormSchema,
-      onSubmit: productFormSchema,
     },
     onSubmit: async ({ value }) => {
       try {
