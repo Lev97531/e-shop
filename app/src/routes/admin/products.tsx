@@ -101,20 +101,23 @@ function RouteComponent() {
   }, [search.q])
   return (
     <div className="flex flex-col gap-4 mt-8">
-      <input
-        type="search"
-        placeholder="Search by name..."
-        className="input input-bordered"
-        value={query}
-        onChange={(e) => {
-          const value = e.target.value
-          setQuery(value)
+      <div className="flex gap-4" >
+        <input
+          type="search"
+          placeholder="Search by name..."
+          className="input input-bordered"
+          value={query}
+          onChange={(e) => {
+            const value = e.target.value
+            setQuery(value)
 
-          if (value == '') {
-            navigate({ to: '/admin/products', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
-          }
-        }}
-      />
+            if (value == '') {
+              navigate({ to: '/admin/products', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
+            }
+          }}
+        />
+      <button className="btn btn-primary" onClick={() => navigate({ to: '/admin/products/new', search: (prev) => prev })}>Add product</button>
+      </div>
       <ProductsTable />
       <div className="flex items-center justify-center gap-3">
         {prevPage ? (
