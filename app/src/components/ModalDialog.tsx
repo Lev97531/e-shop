@@ -4,8 +4,10 @@ import { HTMLAttributes, PropsWithChildren, useCallback, useEffect, useRef } fro
 export const ModalDialog = ({
   children,
   dialogClass,
+  closeTo,
 }: PropsWithChildren<{
   dialogClass?: HTMLAttributes<HTMLDivElement>['className']
+  closeTo?: string
 }>) => {
   const navigate = useNavigate()
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -25,7 +27,7 @@ export const ModalDialog = ({
       ref={dialogRef}
       className="modal"
       onClose={() => {
-        navigate({ to: '..' })
+        navigate({ to: closeTo || '..', search: (prev) => prev })
       }}
     >
       <div className={`modal-box ${dialogClass || 'min-w-2xl'}`}>

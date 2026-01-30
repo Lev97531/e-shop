@@ -5,5 +5,5 @@ export function FieldError({ field }: { field: AnyFieldApi }) {
     return null
   }
 
-  return <em className="text-error">{field.state.meta.errors.map((error) => error?.message).join(',')}</em>
+  return <em className="text-error">{field.state.meta.errors.map((error) => error?.message).join(', ')}</em>
 }

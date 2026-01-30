@@ -4,4 +4,12 @@ Plan:
 - Admin edit product form
 - Search
 
-- Sorft and filter products
+- Sort and filter products
+
+Fixes:
+
+- fix pagination navigate in ProductTable.tsx #26
+
+Enhancements:
+
+- convenient price editor

@@ -1,10 +1,16 @@
-export function formatPrice(cents?: number) {
+export function formatPrice(cents?: number, round = true) {
   if (!cents) {
     return 'N/A'
   }
 
-  const crowns = Math.round(cents / 100)
-  const formatted = crowns.toLocaleString('cs-CZ').replace(/\s/g, '\u00A0')
+  const crowns = round ? Math.round(cents / 100) : cents / 100  
+
+  const formatted = crowns
+    .toLocaleString('cs-CZ', {
+      minimumFractionDigits: round ? 0 : 2,
+      maximumFractionDigits: round ? 0 : 2,
+    })
+    .replace(/\s/g, '\u00A0')
 
   return formatted
 }

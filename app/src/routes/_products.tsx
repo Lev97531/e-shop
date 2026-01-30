@@ -5,7 +5,7 @@ import { Layout } from '~/home/Layout'
 import { ProductList } from '~/home/ProductList'
 
 const loadProducts = createServerFn().handler(async () => {
-  return await prisma.product.findMany()
+  return await prisma.product.findMany({ include: { attributes: true } })
 })
 
 export const Route = createFileRoute('/_products')({

@@ -1,7 +1,9 @@
-import { Route } from '../routes/admin/listProducts'
+import { formatPrice } from '~/shared/format-price'
+import { Route } from '../routes/admin/products'
 
 export const ProductsTable = () => {
   const { products } = Route.useLoaderData()
+  const navigate = Route.useNavigate()
   return (
     <div>
       <table className="table table-zebra">
@@ -17,10 +19,16 @@ export const ProductsTable = () => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id}>
+            <tr
+              key={product.id}
+              className="hover:bg-base-300 cursor-pointer"
+              onClick={() => {
+                navigate({ to: '/admin/products/$id/edit', params: { id: product.id }, search: (prev) => prev })
+              }}
+            >
               <th>{product.id}</th>
               <td>{product.name}</td>
-              <td>{product.priceCents}</td>
+              <td>{formatPrice(product.priceCents, false)}</td>
               <td className="text-center">{product.attributes?.isAvailable ? '✅' : '❌'}</td>
               <td className="text-center">{product.attributes?.isOnSale ? '✅' : '❌'}</td>
               <td className="text-center">{product.attributes?.isNew ? '✅' : '❌'}</td>
