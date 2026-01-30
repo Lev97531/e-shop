@@ -47,7 +47,7 @@ const loadProducts = createServerFn()
     return { products, totalPages }
   })
 
-export const Route = createFileRoute('/admin/listProducts')({
+export const Route = createFileRoute('/admin/products')({
   component: RouteComponent,
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({ search }),
@@ -71,17 +71,30 @@ function RouteComponent() {
   const search = Route.useSearch()
   const [query, setQuery] = React.useState(search.q ?? '')
 
+  const DEBOUNCE_MS = 500
+  const MIN_QUERY_LENGTH = 3
+
   React.useEffect(() => {
-    const qTrim = query.trim()
-    const handle = setTimeout(() => {
-      if (qTrim.length >= 3) {
-        navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: qTrim, page: 1 }) })
-      } else if (qTrim.length === 0 && (search.q ?? '').trim().length > 0) {
-        navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
-      }
-    }, 500)
-    return () => clearTimeout(handle)
-  }, [query, navigate, search.q])
+    const trimmed = query.trim()
+    const current = (search.q ?? '').trim()
+
+    const timeout = setTimeout(() => {
+      const next = trimmed.length >= MIN_QUERY_LENGTH ? trimmed : trimmed.length === 0 ? undefined : null
+
+      if (next === null || next === current) return
+
+      navigate({
+        to: '/admin/products',
+        search: (prev) => ({
+          ...prev,
+          q: next,
+          page: 1,
+        }),
+      })
+    }, DEBOUNCE_MS)
+
+    return () => clearTimeout(timeout)
+  }, [query, search.q, navigate])
 
   React.useEffect(() => {
     setQuery((search.q ?? '').toString())
@@ -98,14 +111,14 @@ function RouteComponent() {
           setQuery(value)
 
           if (value == '') {
-            navigate({ to: '/admin/listProducts', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
+            navigate({ to: '/admin/products', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
           }
         }}
       />
       <ProductsTable />
       <div className="flex items-center justify-center gap-3">
         {prevPage ? (
-          <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: prevPage, q: search.q }}>
+          <Link className="btn btn-primary" to="/admin/products" search={{ page: prevPage, q: search.q }}>
             Prev
           </Link>
         ) : (
@@ -117,7 +130,7 @@ function RouteComponent() {
           Page {page} of {totalPages}
         </div>
         {nextPage ? (
-          <Link className="btn btn-primary" to="/admin/listProducts" search={{ page: nextPage, q: search.q }}>
+          <Link className="btn btn-primary" to="/admin/products" search={{ page: nextPage, q: search.q }}>
             Next
           </Link>
         ) : (

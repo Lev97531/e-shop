@@ -20,7 +20,7 @@ function RouteComponent() {
         <nav className="menu bg-base-200 rounded-box p-2">
           <ul>
             <li>
-              <Link to="/admin/listProducts">Products</Link>
+              <Link to="/admin/products">Products</Link>
             </li>
             <li>
               <Link to="/admin/users">Users</Link>

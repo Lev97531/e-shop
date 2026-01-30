@@ -1,5 +1,3 @@
-import { createServerFn } from '@tanstack/react-start'
-import { prisma } from 'prisma'
 import { z } from 'zod'
 
 export const productEditSchema = z.object({
@@ -10,4 +8,3 @@ export const productEditSchema = z.object({
   isOnSale: z.boolean().default(false),
   isNew: z.boolean().default(false),
 })
-

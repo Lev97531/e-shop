@@ -1,5 +1,5 @@
 import { formatPrice } from '~/shared/format-price'
-import { Route } from '../routes/admin/listProducts'
+import { Route } from '../routes/admin/products'
 
 export const ProductsTable = () => {
   const { products } = Route.useLoaderData()
@@ -23,7 +23,7 @@ export const ProductsTable = () => {
               key={product.id}
               className="hover:bg-base-300 cursor-pointer"
               onClick={() => {
-                navigate({ to: '/admin/listProducts/$id/edit', params: { id: product.id } })
+                navigate({ to: '/admin/products/$id/edit', params: { id: product.id }, search: (prev) => prev })
               }}
             >
               <th>{product.id}</th>

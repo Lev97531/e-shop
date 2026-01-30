@@ -27,7 +27,7 @@ export const ModalDialog = ({
       ref={dialogRef}
       className="modal"
       onClose={() => {
-        navigate({ to: closeTo || '..' })
+        navigate({ to: closeTo || '..', search: (prev) => prev })
       }}
     >
       <div className={`modal-box ${dialogClass || 'min-w-2xl'}`}>

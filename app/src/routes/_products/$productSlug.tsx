@@ -12,7 +12,7 @@ const loadProductSchema = z.object({
 export const loadProduct = createServerFn()
   .inputValidator(loadProductSchema)
   .handler(async ({ data: { productSlug } }) => {
-    const product = await prisma.product.findUnique({ where: { slug: productSlug } })
+    const product = await prisma.product.findUnique({ where: { slug: productSlug }, include: { attributes: true } })
     if (!product) {
       throw notFound()
     }

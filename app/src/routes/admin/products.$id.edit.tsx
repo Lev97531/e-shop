@@ -20,7 +20,7 @@ const paramsSchema = z.object({
   id: z.coerce.number().int().positive(),
 })
 
-export const Route = createFileRoute('/admin/listProducts/$id/edit')({
+export const Route = createFileRoute('/admin/products/$id/edit')({
   params: {
     parse: paramsSchema.parse,
   },
