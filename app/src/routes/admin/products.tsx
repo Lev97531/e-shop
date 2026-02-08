@@ -5,17 +5,18 @@ import { z } from 'zod'
 import { ProductsTable } from '~/admin/ProductsTable'
 import React from 'react'
 import Fuse from 'fuse.js'
+import { MIN_SEARCH_QUERY_LENGTH, SEARCH_DEBOUNCE_TIME_MS } from '~/shared/consts'
 
 const productListPageSize = 10
 
 const loadProductSchema = z.object({
   page: z.number(),
-  q: z.string().optional(),
+  q: z.coerce.string().optional(),
 })
 
 const searchSchema = z.object({
   page: z.number().optional(),
-  q: z.string().optional(),
+  q: z.coerce.string().optional(),
 })
 
 const loadProducts = createServerFn()
@@ -71,15 +72,12 @@ function RouteComponent() {
   const search = Route.useSearch()
   const [query, setQuery] = React.useState(search.q ?? '')
 
-  const DEBOUNCE_MS = 500
-  const MIN_QUERY_LENGTH = 3
-
   React.useEffect(() => {
     const trimmed = query.trim()
     const current = (search.q ?? '').trim()
 
     const timeout = setTimeout(() => {
-      const next = trimmed.length >= MIN_QUERY_LENGTH ? trimmed : trimmed.length === 0 ? undefined : null
+      const next = trimmed.length >= MIN_SEARCH_QUERY_LENGTH ? trimmed : trimmed.length === 0 ? undefined : null
 
       if (next === null || next === current) return
 
@@ -91,7 +89,7 @@ function RouteComponent() {
           page: 1,
         }),
       })
-    }, DEBOUNCE_MS)
+    }, SEARCH_DEBOUNCE_TIME_MS)
 
     return () => clearTimeout(timeout)
   }, [query, search.q, navigate])
@@ -101,7 +99,7 @@ function RouteComponent() {
   }, [search.q])
   return (
     <div className="flex flex-col gap-4 mt-8">
-      <div className="flex gap-4" >
+      <div className="flex gap-4">
         <input
           type="search"
           placeholder="Search by name..."
@@ -116,7 +114,9 @@ function RouteComponent() {
             }
           }}
         />
-      <button className="btn btn-primary" onClick={() => navigate({ to: '/admin/products/new', search: (prev) => prev })}>Add product</button>
+        <button className="btn btn-primary" onClick={() => navigate({ to: '/admin/products/new', search: (prev) => prev })}>
+          Add product
+        </button>
       </div>
       <ProductsTable />
       <div className="flex items-center justify-center gap-3">
