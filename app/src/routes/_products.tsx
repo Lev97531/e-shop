@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { prisma } from 'prisma'
+import { getAuthUser } from '~/auth/get-auth-user'
 import { Layout } from '~/home/Layout'
 import { ProductList } from '~/home/ProductList'
 
@@ -10,6 +11,10 @@ const loadProducts = createServerFn().handler(async () => {
 
 export const Route = createFileRoute('/_products')({
   component: RouteComponent,
+  beforeLoad: async () => {
+    const user = await getAuthUser()
+    return { user }
+  },
   loader: async () => {
     return { products: await loadProducts() }
   },

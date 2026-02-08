@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { FieldError } from '../components/FieldError'
 import { register } from './registration'
+import { login } from './login'
 
 export const registrationSchema = z
   .object({
@@ -31,6 +32,7 @@ export function RegistrationForm() {
     onSubmit: async ({ value }) => {
       try {
         await register({ data: value })
+        await login({ data: value })
         navigate({ to: '/' })
       } catch (error) {
         toast.error((error as Error).message)

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ProductsRouteImport } from './routes/_products'
@@ -18,6 +19,7 @@ import { Route as ProductsIndexRouteImport } from './routes/_products/index'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
 import { Route as AdminOrdersRouteImport } from './routes/admin/orders'
+import { Route as AdminListProductsRouteImport } from './routes/admin/listProducts'
 import { Route as ProductsOrderSuccessRouteImport } from './routes/_products/order-success'
 import { Route as ProductsCheckoutRouteImport } from './routes/_products/checkout'
 import { Route as ProductsCartRouteImport } from './routes/_products/cart'
@@ -28,6 +30,11 @@ import { Route as AdminProductsIdEditRouteImport } from './routes/admin/products
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -69,6 +76,11 @@ const AdminOrdersRoute = AdminOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminListProductsRoute = AdminListProductsRouteImport.update({
+  id: '/listProducts',
+  path: '/listProducts',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ProductsOrderSuccessRoute = ProductsOrderSuccessRouteImport.update({
   id: '/order-success',
   path: '/order-success',
@@ -104,11 +116,13 @@ export interface FileRoutesByFullPath {
   '/': typeof ProductsIndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
   '/$productSlug': typeof ProductsProductSlugRoute
   '/cart': typeof ProductsCartRoute
   '/checkout': typeof ProductsCheckoutRoute
   '/order-success': typeof ProductsOrderSuccessRoute
+  '/admin/listProducts': typeof AdminListProductsRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -118,11 +132,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
   '/$productSlug': typeof ProductsProductSlugRoute
   '/cart': typeof ProductsCartRoute
   '/checkout': typeof ProductsCheckoutRoute
   '/order-success': typeof ProductsOrderSuccessRoute
+  '/admin/listProducts': typeof AdminListProductsRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -136,11 +152,13 @@ export interface FileRoutesById {
   '/_products': typeof ProductsRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
   '/_products/$productSlug': typeof ProductsProductSlugRoute
   '/_products/cart': typeof ProductsCartRoute
   '/_products/checkout': typeof ProductsCheckoutRoute
   '/_products/order-success': typeof ProductsOrderSuccessRoute
+  '/admin/listProducts': typeof AdminListProductsRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -155,11 +173,13 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/login'
+    | '/logout'
     | '/register'
     | '/$productSlug'
     | '/cart'
     | '/checkout'
     | '/order-success'
+    | '/admin/listProducts'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
@@ -169,11 +189,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/logout'
     | '/register'
     | '/$productSlug'
     | '/cart'
     | '/checkout'
     | '/order-success'
+    | '/admin/listProducts'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
@@ -186,11 +208,13 @@ export interface FileRouteTypes {
     | '/_products'
     | '/admin'
     | '/login'
+    | '/logout'
     | '/register'
     | '/_products/$productSlug'
     | '/_products/cart'
     | '/_products/checkout'
     | '/_products/order-success'
+    | '/admin/listProducts'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
@@ -204,6 +228,7 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
   RegisterRoute: typeof RegisterRoute
 }
 
@@ -214,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -270,6 +302,13 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/admin/orders'
       preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/listProducts': {
+      id: '/admin/listProducts'
+      path: '/listProducts'
+      fullPath: '/admin/listProducts'
+      preLoaderRoute: typeof AdminListProductsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_products/order-success': {
@@ -333,7 +372,9 @@ const ProductsRouteChildren: ProductsRouteChildren = {
   ProductsIndexRoute: ProductsIndexRoute,
 }
 
-const ProductsRouteWithChildren = ProductsRoute._addFileChildren(ProductsRouteChildren)
+const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
+  ProductsRouteChildren,
+)
 
 interface AdminProductsRouteChildren {
   AdminProductsNewRoute: typeof AdminProductsNewRoute
@@ -345,9 +386,12 @@ const AdminProductsRouteChildren: AdminProductsRouteChildren = {
   AdminProductsIdEditRoute: AdminProductsIdEditRoute,
 }
 
-const AdminProductsRouteWithChildren = AdminProductsRoute._addFileChildren(AdminProductsRouteChildren)
+const AdminProductsRouteWithChildren = AdminProductsRoute._addFileChildren(
+  AdminProductsRouteChildren,
+)
 
 interface AdminRouteChildren {
+  AdminListProductsRoute: typeof AdminListProductsRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminProductsRoute: typeof AdminProductsRouteWithChildren
   AdminUsersRoute: typeof AdminUsersRoute
@@ -355,6 +399,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminListProductsRoute: AdminListProductsRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminProductsRoute: AdminProductsRouteWithChildren,
   AdminUsersRoute: AdminUsersRoute,
@@ -367,9 +412,12 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
   RegisterRoute: RegisterRoute,
 }
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
 import type { createStart } from '@tanstack/react-start'
