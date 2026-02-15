@@ -228,7 +228,7 @@ export const seedProducts = async () => {
       attributes: {
         create: {
           category: 'Boty',
-          color: 'Černá/Červená',
+          color: 'Zelená',
           size: 'L',
         },
       },

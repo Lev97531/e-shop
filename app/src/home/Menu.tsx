@@ -13,6 +13,11 @@ export const Menu = () => {
         <li>
           <h2 className="menu-title text-primary-content">Kategorie</h2>
           <ul>
+            <li>
+              <Link className={category ? '' : 'menu-active'} to="/" search={(prev) => ({ ...prev, category: '', q: '' })}>
+                Všechny
+              </Link>
+            </li>
             {categories.map((c) => (
               <li key={c}>
                 <Link

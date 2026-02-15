@@ -4,6 +4,7 @@ import Fuse from 'fuse.js'
 import { prisma } from 'prisma'
 import { z } from 'zod'
 import { getAuthUser } from '~/auth/get-auth-user'
+import { Colors } from '~/home/Colors'
 import { Layout } from '~/home/Layout'
 import { Menu } from '~/home/Menu'
 import { ProductList } from '~/home/ProductList'
@@ -15,11 +16,12 @@ const searchSchema = z.object({
   category: z.string().optional(),
   sort: z.string().optional(),
   size: z.array(z.string()).optional(),
+  color: z.array(z.string()).optional(),
 })
 
 const loadProducts = createServerFn()
   .inputValidator(searchSchema)
-  .handler(async ({ data: { q, category, sort, size } }) => {
+  .handler(async ({ data: { q, category, sort, size, color } }) => {
     const allProducts = await prisma.product.findMany({ select: { id: true, name: true } })
     const fuse = new Fuse(allProducts, {
       keys: ['name'],
@@ -32,20 +34,13 @@ const loadProducts = createServerFn()
     const products = await prisma.product.findMany({
       where: {
         id: { in: matchedIds },
-        ...(category && {
-          attributes: {
-            category: {
-              equals: category,
-            },
-          },
-        }),
-        ...(size?.length && {
-          attributes: {
-            size: {
-              in: size,
-            },
-          },
-        }),
+        attributes: {
+          AND: [
+            ...(category ? [{ category: { equals: category } }] : []),
+            ...(size?.length ? [{ size: { in: size } }] : []),
+            ...(color?.length ? [{ color: { in: color } }] : []),
+          ],
+        },
       },
       orderBy: {
         ...(sort == sortNames.Nejlevnější && { priceCents: 'asc' }),
@@ -90,7 +85,7 @@ async function getColors() {
     orderBy: { color: 'asc' },
   })
 
-  const colors = attributes.map((a) => a.color)
+  const colors = attributes.map((a) => a.color!)
   return colors
 }
 
@@ -117,9 +112,13 @@ function RouteComponent() {
         <div className="flex flex-col gap-2">
           <Menu />
           <Sizes />
+          <Colors />
         </div>
         <div className="flex flex-col gap-2 flex-1">
-          <Sort />
+          <div className="flex justify-between items-baseline">
+            <div className="text-3xl font-semibold">Počet nalezených produktů: {products.length}</div>
+            <Sort />
+          </div>
           <ProductList products={products}>
             <Outlet />
           </ProductList>
