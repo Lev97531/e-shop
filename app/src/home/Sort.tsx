@@ -9,11 +9,7 @@ export const sortNames = {
 
 export const Sort = () => {
   const navigate = useNavigate()
-  let { sort } = Route.useSearch()
-
-  if (!sort) {
-    sort = sortNames.Populární
-  }
+  const { sort = sortNames.Populární } = Route.useSearch()
 
   return (
     <div className="self-end">

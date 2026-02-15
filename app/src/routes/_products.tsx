@@ -7,17 +7,19 @@ import { getAuthUser } from '~/auth/get-auth-user'
 import { Layout } from '~/home/Layout'
 import { Menu } from '~/home/Menu'
 import { ProductList } from '~/home/ProductList'
+import { Sizes } from '~/home/Sizes'
 import { Sort, sortNames } from '~/home/Sort'
 
 const searchSchema = z.object({
   q: z.coerce.string().optional(),
   category: z.string().optional(),
   sort: z.string().optional(),
+  size: z.array(z.string()).optional(),
 })
 
 const loadProducts = createServerFn()
   .inputValidator(searchSchema)
-  .handler(async ({ data: { q, category, sort } }) => {
+  .handler(async ({ data: { q, category, sort, size } }) => {
     const allProducts = await prisma.product.findMany({ select: { id: true, name: true } })
     const fuse = new Fuse(allProducts, {
       keys: ['name'],
@@ -37,6 +39,13 @@ const loadProducts = createServerFn()
             },
           },
         }),
+        ...(size?.length && {
+          attributes: {
+            size: {
+              in: size,
+            },
+          },
+        }),
       },
       orderBy: {
         ...(sort == sortNames.Nejlevnější && { priceCents: 'asc' }),
@@ -45,16 +54,45 @@ const loadProducts = createServerFn()
       include: { attributes: true },
     })
 
-    const attributes = await prisma.productAttributes.findMany({
-      select: { category: true },
-      distinct: ['category'],
-      orderBy: { category: 'asc' },
-    })
+    const categories = await getCategories()
+    const sizes = await getSizes()
+    const colors = await getColors()
 
-    const categories = attributes.map((a) => a.category)
-
-    return { products, categories }
+    return { products, categories, sizes, colors }
   })
+
+async function getCategories() {
+  const attributes = await prisma.productAttributes.findMany({
+    select: { category: true },
+    distinct: ['category'],
+    orderBy: { category: 'asc' },
+  })
+
+  const categories = attributes.map((a) => a.category)
+  return categories
+}
+
+async function getSizes() {
+  const attributes = await prisma.productAttributes.findMany({
+    select: { size: true },
+    distinct: ['size'],
+    orderBy: { size: 'asc' },
+  })
+
+  const sizes = attributes.map((a) => a.size!)
+  return sizes
+}
+
+async function getColors() {
+  const attributes = await prisma.productAttributes.findMany({
+    select: { color: true },
+    distinct: ['color'],
+    orderBy: { color: 'asc' },
+  })
+
+  const colors = attributes.map((a) => a.color)
+  return colors
+}
 
 export const Route = createFileRoute('/_products')({
   validateSearch: searchSchema,
@@ -65,9 +103,7 @@ export const Route = createFileRoute('/_products')({
     return { user, search }
   },
   loader: async ({ context: { search } }) => {
-    const { products, categories } = await loadProducts({ data: search })
-
-    return { products, categories }
+    return await loadProducts({ data: search })
   },
   notFoundComponent: () => <h1>Not Found</h1>,
 })
@@ -78,7 +114,10 @@ function RouteComponent() {
   return (
     <Layout>
       <div className="flex gap-2">
-        <Menu />
+        <div className="flex flex-col gap-2">
+          <Menu />
+          <Sizes />
+        </div>
         <div className="flex flex-col gap-2 flex-1">
           <Sort />
           <ProductList products={products}>
