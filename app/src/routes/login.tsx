@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { z } from 'zod'
 import { LoginForm } from '~/auth/login-form'
 
-const searchSchema = z.object({
+export const searchSchema = z.object({
   redirect: z.string().optional(),
 })
 

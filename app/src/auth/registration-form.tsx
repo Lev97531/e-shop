@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { FieldError } from '../components/FieldError'
 import { register } from './registration'
 import { login } from './login'
+import { Route } from '~/routes/register'
 
 export const registrationSchema = z
   .object({
@@ -19,6 +20,7 @@ export const registrationSchema = z
 
 export function RegistrationForm() {
   const navigate = useNavigate()
+  const { redirect } = Route.useSearch()
 
   const form = useForm({
     defaultValues: {
@@ -33,6 +35,12 @@ export function RegistrationForm() {
       try {
         await register({ data: value })
         await login({ data: value })
+
+        if (redirect) {
+          location.href = redirect
+          return
+        }
+
         navigate({ to: '/' })
       } catch (error) {
         toast.error((error as Error).message)
@@ -107,7 +115,7 @@ export function RegistrationForm() {
               <fieldset className="fieldset">
                 <div>
                   <span>Už máte účet? </span>
-                  <Link className="link link-hover" to={'/login'} search={{ redirect: undefined }}>
+                  <Link className="link link-hover" to={'/login'} search={(prev) => ({ ...prev })}>
                     Přihlásit se
                   </Link>
                 </div>

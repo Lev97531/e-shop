@@ -84,7 +84,7 @@ export function LoginForm({onLogin}: { onLogin: () => Promise<void> }) {
               <fieldset className="fieldset">
                 <div>
                   <span>Nemáte účet? </span>
-                  <Link className="link link-hover" to={'/register'}>
+                  <Link className="link link-hover" to={'/register'} search={(prev) => ({ ...prev })}>
                     Zaregistrovat se
                   </Link>
                 </div>
