@@ -5,6 +5,7 @@ import { prisma } from 'prisma'
 import { z } from 'zod'
 import { getAuthUser } from '~/auth/get-auth-user'
 import { Layout } from '~/home/Layout'
+import { Menu } from '~/home/Menu'
 import { ProductList } from '~/home/ProductList'
 
 const searchSchema = z.object({
@@ -29,7 +30,15 @@ const loadProducts = createServerFn()
     const matchedIds = matched.map((p) => p.id)
     const products = await prisma.product.findMany({ where: { id: { in: matchedIds } }, include: { attributes: true } })
 
-    return products
+    const attributes = await prisma.productAttributes.findMany({
+      select: { category: true },
+      distinct: ['category'],
+      orderBy: { category: 'asc' },
+    })
+
+    const categories = attributes.map((a) => a.category)
+
+    return { products, categories }
   })
 
 export const Route = createFileRoute('/_products')({
@@ -37,10 +46,13 @@ export const Route = createFileRoute('/_products')({
   component: RouteComponent,
   beforeLoad: async ({ search }) => {
     const user = await getAuthUser()
+
     return { user, search }
   },
   loader: async ({ context: { search } }) => {
-    return { products: await loadProducts({ data: search }) }
+    const { products, categories } = await loadProducts({ data: search })
+
+    return { products, categories }
   },
   notFoundComponent: () => <h1>Not Found</h1>,
 })
@@ -50,9 +62,12 @@ function RouteComponent() {
 
   return (
     <Layout>
-      <ProductList products={products}>
-        <Outlet />
-      </ProductList>
+      <div className="flex gap-2">
+        <Menu />
+        <ProductList products={products}>
+          <Outlet />
+        </ProductList>
+      </div>
     </Layout>
   )
 }

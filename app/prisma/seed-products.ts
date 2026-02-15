@@ -9,16 +9,16 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'classic-logo-cap',
-      name: 'Classic Logo Cap',
+      slug: 'klasicka-cepice-s-logem',
+      name: 'Klasická čepice s logem',
       priceCents: 19900,
-      description: 'Minimalist cotton cap with embroidered logo.',
+      description: 'Minimalistická bavlněná čepice s vyšívaným logem.',
       imageUrl: await toDataURL('Classic Logo Cap.jpg'),
       attributes: {
         create: {
-          category: 'Hats',
-          color: 'Black',
-          size: 'One Size',
+          category: 'Čepice',
+          color: 'Černá',
+          size: 'M',
           rating: 4,
           isNew: true,
         },
@@ -28,16 +28,16 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'winter-beanie',
-      name: 'Winter Beanie',
+      slug: 'zimni-cepice',
+      name: 'Zimní čepice',
       priceCents: 14900,
-      description: 'Warm knitted beanie for cold weather.',
+      description: 'Teplá pletená čepice na chladné počasí.',
       imageUrl: await toDataURL('Winter Beanie.jpg'),
       attributes: {
         create: {
-          category: 'Hats',
-          color: 'Grey',
-          size: 'One Size',
+          category: 'Čepice',
+          color: 'Šedá',
+          size: 'M',
         },
       },
     },
@@ -45,15 +45,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'basic-white-tshirt',
-      name: 'Basic White T-Shirt',
+      slug: 'zakladni-bile-tricko',
+      name: 'Základní bílé tričko',
       priceCents: 24900,
-      description: 'Premium cotton t-shirt with relaxed fit.',
+      description: 'Prémiové bavlněné tričko s volným střihem.',
       imageUrl: await toDataURL('Basic White T-Shirt.jpg'),
       attributes: {
         create: {
-          category: 'T-Shirt',
-          color: 'White',
+          category: 'Trička',
+          color: 'Bílá',
           size: 'M',
           rating: 5,
         },
@@ -63,15 +63,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'graphic-street-tee',
-      name: 'Graphic Street Tee',
+      slug: 'graficke-ulicni-tricko',
+      name: 'Grafické uliční tričko',
       priceCents: 29900,
-      description: 'Streetwear t-shirt with bold graphic print.',
+      description: 'Uliční tričko s odvážným grafickým potiskem.',
       imageUrl: await toDataURL('Graphic Street Tee.jpg'),
       attributes: {
         create: {
-          category: 'T-Shirt',
-          color: 'Black',
+          category: 'Trička',
+          color: 'Černá',
           size: 'L',
           isOnSale: true,
         },
@@ -81,15 +81,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'oversized-vintage-tee',
-      name: 'Oversized Vintage Tee',
+      slug: 'oversize-vintage-tricko',
+      name: 'Oversize vintage tričko',
       priceCents: 27900,
-      description: 'Oversized t-shirt inspired by vintage fashion.',
+      description: 'Oversize tričko inspirované vintage módou.',
       imageUrl: await toDataURL('Oversized Vintage Tee.jpg'),
       attributes: {
         create: {
-          category: 'T-Shirt',
-          color: 'Beige',
+          category: 'Trička',
+          color: 'Béžová',
           size: 'XL',
         },
       },
@@ -98,15 +98,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'basic-hoodie',
-      name: 'Basic Hoodie',
+      slug: 'zakladni-mikina',
+      name: 'Základní mikina',
       priceCents: 49900,
-      description: 'Comfortable hoodie with soft fleece interior.',
+      description: 'Pohodlná mikina s měkkým fleecem uvnitř.',
       imageUrl: await toDataURL('Basic Hoodie.jpg'),
       attributes: {
         create: {
-          category: 'Hoodie',
-          color: 'Grey',
+          category: 'Mikiny',
+          color: 'Šedá',
           size: 'L',
           rating: 5,
         },
@@ -116,15 +116,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'zip-up-hoodie',
-      name: 'Zip-Up Hoodie',
+      slug: 'mikina-na-zip',
+      name: 'Mikina na zip',
       priceCents: 54900,
-      description: 'Full-zip hoodie for everyday wear.',
+      description: 'Mikina s celým zipem pro každodenní nošení.',
       imageUrl: await toDataURL('Zip-Up Hoodie.jpg'),
       attributes: {
         create: {
-          category: 'Hoodie',
-          color: 'Black',
+          category: 'Mikiny',
+          color: 'Černá',
           size: 'M',
         },
       },
@@ -133,16 +133,16 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'slim-fit-jeans',
-      name: 'Slim Fit Jeans',
+      slug: 'slim-fit-dziny',
+      name: 'Slim fit džíny',
       priceCents: 59900,
-      description: 'Stretch denim jeans with slim fit cut.',
+      description: 'Džíny z elastického denimu se slim fit střihem.',
       imageUrl: await toDataURL('Slim Fit Jeans.jpg'),
       attributes: {
         create: {
-          category: 'Pants',
-          color: 'Dark Blue',
-          size: '32',
+          category: 'Kalhoty',
+          color: 'Tmavě modrá',
+          size: 'L',
         },
       },
     },
@@ -150,16 +150,16 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'cargo-pants',
-      name: 'Cargo Pants',
+      slug: 'kargo-kalhoty',
+      name: 'Kargo kalhoty',
       priceCents: 64900,
-      description: 'Utility cargo pants with multiple pockets.',
+      description: 'Praktické kargo kalhoty s více kapsami.',
       imageUrl: await toDataURL('Cargo Pants.jpg'),
       attributes: {
         create: {
-          category: 'Pants',
-          color: 'Olive',
-          size: '34',
+          category: 'Kalhoty',
+          color: 'Olivová',
+          size: 'XL',
         },
       },
     },
@@ -167,14 +167,14 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'casual-summer-shorts',
-      name: 'Casual Summer Shorts',
+      slug: 'lehke-letni-sortky',
+      name: 'Lehké letní šortky',
       priceCents: 29900,
-      description: 'Lightweight shorts ideal for summer days.',
+      description: 'Lehké šortky ideální na letní dny.',
       imageUrl: await toDataURL('Casual Summer Shorts.jpg'),
       attributes: {
         create: {
-          category: 'Shorts',
+          category: 'Šortky',
           color: 'Khaki',
           size: 'M',
         },
@@ -184,15 +184,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'sport-shorts',
-      name: 'Sport Shorts',
+      slug: 'sportovni-sortky',
+      name: 'Sportovní šortky',
       priceCents: 24900,
-      description: 'Breathable shorts for training and running.',
+      description: 'Prodyšné šortky pro trénink a běh.',
       imageUrl: await toDataURL('Sport Shorts.jpg'),
       attributes: {
         create: {
-          category: 'Shorts',
-          color: 'Black',
+          category: 'Šortky',
+          color: 'Černá',
           size: 'L',
           isOnSale: true,
         },
@@ -202,16 +202,16 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'classic-sneakers',
-      name: 'Classic Sneakers',
+      slug: 'klasicke-boty',
+      name: 'Klasické boty',
       priceCents: 79900,
-      description: 'Timeless low-top sneakers with rubber sole.',
+      description: 'Nadčasové nízké boty s gumovou podrážkou.',
       imageUrl: await toDataURL('Classic Sneakers.jpg'),
       attributes: {
         create: {
-          category: 'Shoes',
-          color: 'White',
-          size: '42',
+          category: 'Boty',
+          color: 'Bílá',
+          size: 'M',
           rating: 5,
         },
       },
@@ -220,16 +220,16 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'running-shoes',
-      name: 'Running Shoes',
+      slug: 'bezecke-boty',
+      name: 'Běžecké boty',
       priceCents: 89900,
-      description: 'Lightweight running shoes with cushioned sole.',
+      description: 'Lehké běžecké boty s polstrovanou podrážkou.',
       imageUrl: await toDataURL('Running Shoes.jpg'),
       attributes: {
         create: {
-          category: 'Shoes',
-          color: 'Black/Red',
-          size: '43',
+          category: 'Boty',
+          color: 'Černá/Červená',
+          size: 'L',
         },
       },
     },
@@ -237,15 +237,15 @@ export const seedProducts = async () => {
 
   await prisma.product.create({
     data: {
-      slug: 'canvas-belt',
-      name: 'Canvas Belt',
+      slug: 'plateny-pasek',
+      name: 'Plátěný pásek',
       priceCents: 16900,
-      description: 'Durable canvas belt with metal buckle.',
+      description: 'Odolný plátěný pásek s kovovou sponou.',
       attributes: {
         create: {
-          category: 'Accessories',
-          color: 'Black',
-          size: 'One Size',
+          category: 'Doplňky',
+          color: 'Černá',
+          size: 'M',
         },
       },
     },
