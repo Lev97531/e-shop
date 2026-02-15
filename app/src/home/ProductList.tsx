@@ -8,7 +8,7 @@ import { Product } from '~/shared/types'
 
 export function ProductList({ products, children }: PropsWithChildren<{ products: Product[] }>) {
   return (
-    <div className="inline-flex flex-wrap gap-4 mx-auto">
+    <div className="flex flex-wrap gap-4">
       {products.map((product) => (
         <ProductItem key={product.id} product={product} />
       ))}
@@ -21,7 +21,7 @@ function ProductItem({ product }: { product: Product }) {
   const { addProductToCart } = useShoppingCart()
 
   return (
-    <div className="card bg-base-200 w-96 shadow-sm">
+    <div className="card bg-base-200 w-88 shadow-sm">
       <figure className="mt-4">
         <img width={200} src={product.imageUrl || NA} alt="Shoes" />
       </figure>
@@ -30,7 +30,12 @@ function ProductItem({ product }: { product: Product }) {
         <p>{product.description}</p>
         <div className="card-actions justify-end">
           <p className="font-bold text-2xl">{formatPrice(product.priceCents)},-</p>
-          <Link className="btn btn-primary" to="/$productSlug" params={{ productSlug: product.slug }}>
+          <Link
+            className="btn btn-primary"
+            to="/$productSlug"
+            params={{ productSlug: product.slug }}
+            search={(prev) => ({ ...prev })}
+          >
             Show details
           </Link>
           <button

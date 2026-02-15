@@ -7,18 +7,17 @@ import { getAuthUser } from '~/auth/get-auth-user'
 import { Layout } from '~/home/Layout'
 import { Menu } from '~/home/Menu'
 import { ProductList } from '~/home/ProductList'
+import { Sort, sortNames } from '~/home/Sort'
 
 const searchSchema = z.object({
   q: z.coerce.string().optional(),
-})
-
-const loadProductsSchema = z.object({
-  q: z.string().default(''),
+  category: z.string().optional(),
+  sort: z.string().optional(),
 })
 
 const loadProducts = createServerFn()
-  .inputValidator(loadProductsSchema)
-  .handler(async ({ data: { q } }) => {
+  .inputValidator(searchSchema)
+  .handler(async ({ data: { q, category, sort } }) => {
     const allProducts = await prisma.product.findMany({ select: { id: true, name: true } })
     const fuse = new Fuse(allProducts, {
       keys: ['name'],
@@ -28,7 +27,23 @@ const loadProducts = createServerFn()
 
     const matched = q ? fuse.search(q).map((r) => r.item) : allProducts
     const matchedIds = matched.map((p) => p.id)
-    const products = await prisma.product.findMany({ where: { id: { in: matchedIds } }, include: { attributes: true } })
+    const products = await prisma.product.findMany({
+      where: {
+        id: { in: matchedIds },
+        ...(category && {
+          attributes: {
+            category: {
+              equals: category,
+            },
+          },
+        }),
+      },
+      orderBy: {
+        ...(sort == sortNames.Nejlevnější && { priceCents: 'asc' }),
+        ...(sort == sortNames.Nejdražší && { priceCents: 'desc' }),
+      },
+      include: { attributes: true },
+    })
 
     const attributes = await prisma.productAttributes.findMany({
       select: { category: true },
@@ -64,9 +79,12 @@ function RouteComponent() {
     <Layout>
       <div className="flex gap-2">
         <Menu />
-        <ProductList products={products}>
-          <Outlet />
-        </ProductList>
+        <div className="flex flex-col gap-2 flex-1">
+          <Sort />
+          <ProductList products={products}>
+            <Outlet />
+          </ProductList>
+        </div>
       </div>
     </Layout>
   )

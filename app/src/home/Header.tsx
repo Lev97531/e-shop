@@ -14,7 +14,9 @@ export const Header = () => {
     <div className="h-24 dark:bg-[#22223b] light:bg-[#ffffff]">
       <div className="flex justify-between h-full items-center m-4">
         <div className="flex gap-8 items-center">
-          <div className="text-5xl font-bold italic -translate-y-1">e-shop.cz</div>
+          <Link className="text-5xl font-bold italic -translate-y-1" to="/">
+            e-shop.cz
+          </Link>
           <SearchProduct />
         </div>
         <div>

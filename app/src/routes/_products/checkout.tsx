@@ -37,7 +37,7 @@ function RouteComponent() {
 
   useEffect(() => {
     doCheckout()
-  }, [])
+  }, [products])
 
   return null
 }
