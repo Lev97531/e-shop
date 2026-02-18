@@ -10,7 +10,7 @@ export const getAuthUser = createServerFn().handler(async () => {
     return null
   }
 
-  const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { user: true } })
+  const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { user: { include: { admin: true } } } })
   if (!session) {
     return null
   }

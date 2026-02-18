@@ -37,6 +37,13 @@ model User {
 
   emailAuth EmailAuth?
   session   Session[]
+
+  admin Admin?
+}
+
+model Admin {
+  userId Int @id
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model EmailAuth {

@@ -3,7 +3,7 @@ import { toDataURL } from './to-data-url'
 
 export const seedProducts = async () => {
   if (await prisma.product.count()) {
-    console.log('- skipping items')
+    console.log('- skipping products')
     return
   }
 
@@ -252,4 +252,4 @@ export const seedProducts = async () => {
   })
 }
 
-console.log('- seeded items')
+console.log('- seeded products')

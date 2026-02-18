@@ -1,11 +1,9 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
+import Fuse from 'fuse.js'
 import { prisma } from 'prisma'
 import { z } from 'zod'
 import { ProductsTable } from '~/admin/ProductsTable'
-import React from 'react'
-import Fuse from 'fuse.js'
-import { MIN_SEARCH_QUERY_LENGTH, SEARCH_DEBOUNCE_TIME_MS } from '~/shared/consts'
 import { useSearch } from '~/shared/useSearch'
 
 const productListPageSize = 10
@@ -28,16 +26,20 @@ const loadProducts = createServerFn()
     const query = q?.trim()
 
     if (query) {
-      const allProducts = await prisma.product.findMany({ include: { attributes: true } })
+      const allProducts = await prisma.product.findMany({ select: { id: true, name: true } })
       const fuse = new Fuse(allProducts, {
         keys: ['name'],
-        threshold: 0.4,
+        threshold: 0.4, 
         ignoreLocation: true,
       })
       const matched = fuse.search(query).map((r) => r.item)
+      const matchedIds = matched.map((p) => p.id)
       const count = matched.length
       const totalPages = Math.max(1, Math.ceil(count / productListPageSize))
-      const products = matched.slice(skip, skip + productListPageSize)
+      const products = await prisma.product.findMany({ 
+        where: { id: { in: matchedIds.slice(skip, skip + productListPageSize) } },
+        include: { attributes: true } 
+      })
       return { products, totalPages }
     }
 
