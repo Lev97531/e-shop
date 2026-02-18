@@ -6,6 +6,7 @@ import { ProductsTable } from '~/admin/ProductsTable'
 import React from 'react'
 import Fuse from 'fuse.js'
 import { MIN_SEARCH_QUERY_LENGTH, SEARCH_DEBOUNCE_TIME_MS } from '~/shared/consts'
+import { useSearch } from '~/shared/useSearch'
 
 const productListPageSize = 10
 
@@ -69,34 +70,16 @@ export const Route = createFileRoute('/admin/products')({
 function RouteComponent() {
   const { totalPages, prevPage, nextPage, page } = Route.useLoaderData()
   const navigate = Route.useNavigate()
-  const search = Route.useSearch()
-  const [query, setQuery] = React.useState(search.q ?? '')
+  const routeSearch = Route.useSearch()
 
-  React.useEffect(() => {
-    const trimmed = query.trim()
-    const current = (search.q ?? '').trim()
-
-    const timeout = setTimeout(() => {
-      const next = trimmed.length >= MIN_SEARCH_QUERY_LENGTH ? trimmed : trimmed.length === 0 ? undefined : null
-
-      if (next === null || next === current) return
-
+  const { search, setSearch } = useSearch({
+    initialSearch: routeSearch.q,
+    onSearchChange: (query) =>
       navigate({
         to: '/admin/products',
-        search: (prev) => ({
-          ...prev,
-          q: next,
-          page: 1,
-        }),
-      })
-    }, SEARCH_DEBOUNCE_TIME_MS)
-
-    return () => clearTimeout(timeout)
-  }, [query, search.q, navigate])
-
-  React.useEffect(() => {
-    setQuery((search.q ?? '').toString())
-  }, [search.q])
+        search: (prev) => ({ ...prev, q: query, page: 1 }),
+      }),
+  })
   return (
     <div className="flex flex-col gap-4 mt-8">
       <div className="flex gap-4">
@@ -104,15 +87,8 @@ function RouteComponent() {
           type="search"
           placeholder="Search by name..."
           className="input input-bordered"
-          value={query}
-          onChange={(e) => {
-            const value = e.target.value
-            setQuery(value)
-
-            if (value == '') {
-              navigate({ to: '/admin/products', search: (prev) => ({ ...prev, q: undefined, page: 1 }) })
-            }
-          }}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <button className="btn btn-primary" onClick={() => navigate({ to: '/admin/products/new', search: (prev) => prev })}>
           Add product
@@ -121,7 +97,7 @@ function RouteComponent() {
       <ProductsTable />
       <div className="flex items-center justify-center gap-3">
         {prevPage ? (
-          <Link className="btn btn-primary" to="/admin/products" search={{ page: prevPage, q: search.q }}>
+          <Link className="btn btn-primary" to="/admin/products" search={{ page: prevPage, q: routeSearch.q }}>
             Prev
           </Link>
         ) : (
@@ -133,7 +109,7 @@ function RouteComponent() {
           Page {page} of {totalPages}
         </div>
         {nextPage ? (
-          <Link className="btn btn-primary" to="/admin/products" search={{ page: nextPage, q: search.q }}>
+          <Link className="btn btn-primary" to="/admin/products" search={{ page: nextPage, q: routeSearch.q }}>
             Next
           </Link>
         ) : (

@@ -19,7 +19,6 @@ import { Route as ProductsIndexRouteImport } from './routes/_products/index'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
 import { Route as AdminOrdersRouteImport } from './routes/admin/orders'
-import { Route as AdminListProductsRouteImport } from './routes/admin/listProducts'
 import { Route as ProductsOrderSuccessRouteImport } from './routes/_products/order-success'
 import { Route as ProductsCheckoutRouteImport } from './routes/_products/checkout'
 import { Route as ProductsCartRouteImport } from './routes/_products/cart'
@@ -76,11 +75,6 @@ const AdminOrdersRoute = AdminOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminListProductsRoute = AdminListProductsRouteImport.update({
-  id: '/listProducts',
-  path: '/listProducts',
-  getParentRoute: () => AdminRoute,
-} as any)
 const ProductsOrderSuccessRoute = ProductsOrderSuccessRouteImport.update({
   id: '/order-success',
   path: '/order-success',
@@ -122,7 +116,6 @@ export interface FileRoutesByFullPath {
   '/cart': typeof ProductsCartRoute
   '/checkout': typeof ProductsCheckoutRoute
   '/order-success': typeof ProductsOrderSuccessRoute
-  '/admin/listProducts': typeof AdminListProductsRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -138,7 +131,6 @@ export interface FileRoutesByTo {
   '/cart': typeof ProductsCartRoute
   '/checkout': typeof ProductsCheckoutRoute
   '/order-success': typeof ProductsOrderSuccessRoute
-  '/admin/listProducts': typeof AdminListProductsRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -158,7 +150,6 @@ export interface FileRoutesById {
   '/_products/cart': typeof ProductsCartRoute
   '/_products/checkout': typeof ProductsCheckoutRoute
   '/_products/order-success': typeof ProductsOrderSuccessRoute
-  '/admin/listProducts': typeof AdminListProductsRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
@@ -179,7 +170,6 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/order-success'
-    | '/admin/listProducts'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
@@ -195,7 +185,6 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/order-success'
-    | '/admin/listProducts'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
@@ -214,7 +203,6 @@ export interface FileRouteTypes {
     | '/_products/cart'
     | '/_products/checkout'
     | '/_products/order-success'
-    | '/admin/listProducts'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/users'
@@ -304,13 +292,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/listProducts': {
-      id: '/admin/listProducts'
-      path: '/listProducts'
-      fullPath: '/admin/listProducts'
-      preLoaderRoute: typeof AdminListProductsRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/_products/order-success': {
       id: '/_products/order-success'
       path: '/order-success'
@@ -391,7 +372,6 @@ const AdminProductsRouteWithChildren = AdminProductsRoute._addFileChildren(
 )
 
 interface AdminRouteChildren {
-  AdminListProductsRoute: typeof AdminListProductsRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminProductsRoute: typeof AdminProductsRouteWithChildren
   AdminUsersRoute: typeof AdminUsersRoute
@@ -399,7 +379,6 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminListProductsRoute: AdminListProductsRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminProductsRoute: AdminProductsRouteWithChildren,
   AdminUsersRoute: AdminUsersRoute,
