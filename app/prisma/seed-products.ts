@@ -252,4 +252,3 @@ export const seedProducts = async () => {
   })
 }
 
-console.log('- seeded products')

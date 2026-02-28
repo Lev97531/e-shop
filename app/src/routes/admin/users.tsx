@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import Fuse from 'fuse.js'
 import { prisma } from 'prisma'
-import { z } from 'zod'
+import { includes, z } from 'zod'
 import { UsersTable } from '~/admin/UsersTable'
 import { useSearch } from '~/shared/useSearch'
 
@@ -36,13 +36,14 @@ const loadUsers = createServerFn()
       const matchedIds = matched.map((u) => u.id)
       const count = matched.length
       const totalPages = Math.max(1, Math.ceil(count / userListPageSize))
-      const users = await prisma.user.findMany({ 
-        where: { id: { in: matchedIds.slice(skip, skip + userListPageSize) } }
+      const users = await prisma.user.findMany({
+        where: { id: { in: matchedIds.slice(skip, skip + userListPageSize) } },
+        include: { admin: true },
       })
       return { users, totalPages }
     }
 
-    const users = await prisma.user.findMany({ take: userListPageSize, skip })
+    const users = await prisma.user.findMany({ take: userListPageSize, skip, include: { admin: true } })
     const count = await prisma.user.count()
 
     const totalPages = Math.ceil(count / userListPageSize)

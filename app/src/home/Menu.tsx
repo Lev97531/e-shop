@@ -11,7 +11,7 @@ export const Menu = () => {
     <div>
       <ul className="menu bg-base-200 rounded-box w-46">
         <li>
-          <h2 className="menu-title text-primary-content">Kategorie</h2>
+          <h2 className="menu-title text-base-content">Kategorie</h2>
           <ul>
             <li>
               <Link className={category ? '' : 'menu-active'} to="/" search={(prev) => ({ ...prev, category: '', q: '' })}>

@@ -9,6 +9,7 @@ export const UsersTable = () => {
           <tr>
             <th className="w-8">ID</th>
             <th>Email</th>
+            <th>isAdmin</th>
           </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@ export const UsersTable = () => {
             <tr key={user.id}>
               <th>{user.id}</th>
               <td>{user.email}</td>
+              <td>{user.admin ? '✅' : '❌'}</td>
             </tr>
           ))}
         </tbody>

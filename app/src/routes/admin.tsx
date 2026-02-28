@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link } from '@tanstack/react-router'
 import { getAuthUser } from '~/auth/get-auth-user'
+import { Home } from 'lucide-react'
 
 export const Route = createFileRoute('/admin')({
   component: RouteComponent,
@@ -16,8 +17,8 @@ export const Route = createFileRoute('/admin')({
 
 function RouteComponent() {
   return (
-    <div className="flex gap-6">
-      <aside className="w-56 shrink-0">
+    <div className="flex gap-6 mt-5">
+      <aside className="w-46 shrink-0">
         <nav className="menu bg-base-200 rounded-box p-2">
           <ul>
             <li>
@@ -33,6 +34,16 @@ function RouteComponent() {
         </nav>
       </aside>
       <main className="flex-1">
+        <div className="breadcrumbs text-md">
+          <ul>
+            <li>
+              <Link to="/">
+                <Home /> Úvodní stránka
+              </Link>
+            </li>
+            <li>Admin</li>
+          </ul>
+        </div>
         <Outlet />
       </main>
     </div>

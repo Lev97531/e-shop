@@ -31,7 +31,7 @@ function ProductItem({ product }: { product: Product }) {
         <div className="card-actions justify-end">
           <p className="font-bold text-2xl">{formatPrice(product.priceCents)},-</p>
           <Link
-            className="btn btn-primary"
+            className="btn btn-secondary"
             to="/$productSlug"
             params={{ productSlug: product.slug }}
             search={(prev) => ({ ...prev })}

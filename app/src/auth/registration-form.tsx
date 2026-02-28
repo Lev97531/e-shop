@@ -50,7 +50,7 @@ export function RegistrationForm() {
 
   return (
     <div>
-      <div className="hero bg-base-200 h-full py-40">
+      <div className="hero h-full py-40">
         <div className="hero-content flex-col">
           <div className="card bg-base-100 w-md shrink-0 shadow-2xl">
             <div className="card-body">

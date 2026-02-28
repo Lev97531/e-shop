@@ -22,4 +22,3 @@ export const seedUsers = async () => {
   })
 }
 
-console.log('- seeded users')
