@@ -1,7 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { prisma } from 'prisma'
 import Stripe from 'stripe'
-import { placeOrder } from './place-order';
 
 export type CheckoutItem = { id: number; quantity: number }
 
@@ -45,8 +44,6 @@ export const checkout = createServerFn({ method: 'POST' })
       success_url: `${baseUrl}/order-success`,
       cancel_url: `${baseUrl}`,
     })
-
-    await placeOrder(products)
 
     return session.url
   })
