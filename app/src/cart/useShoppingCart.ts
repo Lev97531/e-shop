@@ -2,6 +2,14 @@ import { useCallback, useMemo } from 'react'
 import { cartSettings } from './stored-cart-settings'
 import { useStoredCartProducts } from './useStoredCartProducts'
 
+// pseudo code: Shopping cart hook
+// GET products, CALCULATE total
+// addProduct: add or increment (with limit)
+// removeProduct: delete from cart
+// decreaseQuantity: decrement or remove
+// clearCart: empty cart
+// RETURN cart state and functions
+
 export const useShoppingCart = () => {
   const { products, saveProducts } = useStoredCartProducts()
 

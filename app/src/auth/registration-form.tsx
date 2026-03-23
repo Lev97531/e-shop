@@ -15,7 +15,7 @@ export const registrationSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Hesla se neshodují',
-    path: ['confirmPassword'], // error shows on confirmPassword field
+    path: ['confirmPassword'],
   })
 
 export function RegistrationForm() {
@@ -24,9 +24,9 @@ export function RegistrationForm() {
 
   const form = useForm({
     defaultValues: {
-      email: 'bebebe@gmail.com',
-      password: '12345678',
-      confirmPassword: '12345678',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
     validators: {
       onChange: registrationSchema,

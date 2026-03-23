@@ -98,7 +98,7 @@ export function ProductForm({ product, onSuccess }: { product: Product; onSucces
 
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-2">Edit product</h3>
+      <h3 className="text-lg font-semibold mb-2">Správa produktů</h3>
       <fieldset className="fieldset">
         <form.Field
           name="slug"
@@ -311,7 +311,7 @@ export function ProductForm({ product, onSuccess }: { product: Product; onSucces
             form.handleSubmit()
           }}
         >
-          Save
+          Uložit
         </button>
       </fieldset>
     </div>

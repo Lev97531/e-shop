@@ -13,8 +13,8 @@ export const loginSchema = z.object({
 export function LoginForm({onLogin}: { onLogin: () => Promise<void> }) {
   const form = useForm({
     defaultValues: {
-      email: 'bebebe@gmail.com',
-      password: '12345678',
+      email: '',
+      password: '',
     },
     validators: {
       onChange: loginSchema,

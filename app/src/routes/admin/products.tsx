@@ -87,36 +87,36 @@ function RouteComponent() {
       <div className="flex gap-4">
         <input
           type="search"
-          placeholder="Search by name..."
+          placeholder="Hledat podle jména..."
           className="input input-bordered"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <button className="btn btn-primary" onClick={() => navigate({ to: '/admin/products/new', search: (prev) => prev })}>
-          Add product
+          Přidat produkt
         </button>
       </div>
       <ProductsTable />
       <div className="flex items-center justify-center gap-3">
         {prevPage ? (
           <Link className="btn btn-primary" to="/admin/products" search={{ page: prevPage, q: routeSearch.q }}>
-            Prev
+            Předchozí
           </Link>
         ) : (
           <button className="btn btn-primary btn-disabled" aria-disabled>
-            Prev
+            Předchozí
           </button>
         )}
         <div className="opacity-80">
-          Page {page} of {totalPages}
+          Stránka {page} z {totalPages}
         </div>
         {nextPage ? (
           <Link className="btn btn-primary" to="/admin/products" search={{ page: nextPage, q: routeSearch.q }}>
-            Next
+            Další
           </Link>
         ) : (
           <button className="btn btn-primary btn-disabled" aria-disabled>
-            Next
+            Další
           </button>
         )}
       </div>

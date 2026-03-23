@@ -34,7 +34,7 @@ export const Header = () => {
               <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                 {user.admin && (
                   <li>
-                    <Link to="/admin">Správa webu</Link>
+                    <Link to="/admin">Administrace</Link>
                   </li>
                 )}
                 <li>

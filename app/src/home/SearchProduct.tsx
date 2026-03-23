@@ -14,7 +14,7 @@ export const SearchProduct = () => {
     <div className="leading-none">
       <input
         type="search"
-        placeholder="Search by name..."
+        placeholder="Hledat podle jména..."
         className="input input-bordered min-w-sm"
         value={search}
         onChange={(e) => setSearch(e.target.value)}

@@ -36,13 +36,13 @@ function ProductItem({ product }: { product: Product }) {
             params={{ productSlug: product.slug }}
             search={(prev) => ({ ...prev })}
           >
-            Show details
+            Zobrazit detail
           </Link>
           <button
             className="btn btn-primary"
             onClick={() => {
               addProductToCart(product.id)
-              toast.success(`${product.name} uspšně byl přidan do košiku`)
+              toast.success(`${product.name} úspěšně byl přidán do košíku`)
             }}
           >
             Do košíku
