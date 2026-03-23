@@ -1,5 +1,9 @@
 # E-Shop App
 
+## Setup
+
+- Copy `example.env` to `.env`
+
 ## Npm Scripts
 
 - `dev` - Starts development server. It monitors file changes and reloads running program parts.

@@ -10,7 +10,8 @@
     "db-reset": "prisma migrate reset",
     "db-migrate": "prisma migrate dev",
     "db-seed": "prisma db seed",
-    "db-pull": "prisma db pull"
+    "db-pull": "prisma db pull",
+    "prisma-studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.2",
