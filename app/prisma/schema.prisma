@@ -29,7 +29,8 @@ model ProductLine {
   priceCents Int
   quantity   Int
 
-  orders Order[]
+  orderId Int
+  order Order @relation(fields: [orderId], references: [id])
 }
 
 model Product {

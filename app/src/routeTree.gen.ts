@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StripeRouteImport } from './routes/stripe'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
@@ -26,6 +27,11 @@ import { Route as ProductsProductSlugRouteImport } from './routes/_products/$pro
 import { Route as AdminProductsNewRouteImport } from './routes/admin/products.new'
 import { Route as AdminProductsIdEditRouteImport } from './routes/admin/products.$id.edit'
 
+const StripeRoute = StripeRouteImport.update({
+  id: '/stripe',
+  path: '/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
+  '/stripe': typeof StripeRoute
   '/$productSlug': typeof ProductsProductSlugRoute
   '/cart': typeof ProductsCartRoute
   '/checkout': typeof ProductsCheckoutRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
+  '/stripe': typeof StripeRoute
   '/$productSlug': typeof ProductsProductSlugRoute
   '/cart': typeof ProductsCartRoute
   '/checkout': typeof ProductsCheckoutRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/register': typeof RegisterRoute
+  '/stripe': typeof StripeRoute
   '/_products/$productSlug': typeof ProductsProductSlugRoute
   '/_products/cart': typeof ProductsCartRoute
   '/_products/checkout': typeof ProductsCheckoutRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/register'
+    | '/stripe'
     | '/$productSlug'
     | '/cart'
     | '/checkout'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/register'
+    | '/stripe'
     | '/$productSlug'
     | '/cart'
     | '/checkout'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/register'
+    | '/stripe'
     | '/_products/$productSlug'
     | '/_products/cart'
     | '/_products/checkout'
@@ -218,10 +230,18 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   RegisterRoute: typeof RegisterRoute
+  StripeRoute: typeof StripeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/stripe': {
+      id: '/stripe'
+      path: '/stripe'
+      fullPath: '/stripe'
+      preLoaderRoute: typeof StripeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   RegisterRoute: RegisterRoute,
+  StripeRoute: StripeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

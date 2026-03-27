@@ -4,6 +4,14 @@
 
 - Copy `example.env` to `.env`
 
+## Stripe local testing
+
+- Install Stripe CLI 
+
+```
+winget install Stripe.StripeCLI
+```
+
 ## Npm Scripts
 
 - `dev` - Starts development server. It monitors file changes and reloads running program parts.
