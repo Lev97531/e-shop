@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import Fuse from 'fuse.js'
 import { prisma } from 'prisma'
-import { includes, z } from 'zod'
+import { z } from 'zod'
 import { UsersTable } from '~/admin/UsersTable'
 import { useSearch } from '~/shared/useSearch'
 
@@ -87,7 +87,7 @@ function RouteComponent() {
       <div className="flex gap-4">
         <input
           type="search"
-          placeholder="Search by email..."
+          placeholder="Hledat podle e-mailu..."
           className="input input-bordered"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -97,23 +97,23 @@ function RouteComponent() {
       <div className="flex items-center justify-center gap-3">
         {prevPage ? (
           <Link className="btn btn-primary" to="/admin/users" search={{ page: prevPage, q: routeSearch.q }}>
-            Prev
+            Předchozí
           </Link>
         ) : (
           <button className="btn btn-primary btn-disabled" aria-disabled>
-            Prev
+            Předchozí
           </button>
         )}
         <div className="opacity-80">
-          Page {page} of {totalPages}
+          Stránka {page} z {totalPages}
         </div>
         {nextPage ? (
           <Link className="btn btn-primary" to="/admin/users" search={{ page: nextPage, q: routeSearch.q }}>
-            Next
+            Další
           </Link>
         ) : (
           <button className="btn btn-primary btn-disabled" aria-disabled>
-            Next
+            Další
           </button>
         )}
       </div>

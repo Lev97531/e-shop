@@ -38,6 +38,9 @@ export const Header = () => {
                   </li>
                 )}
                 <li>
+                  <Link to="/my-orders">Mé objednávky</Link>
+                </li>
+                <li>
                   <Link to="/logout">Odhlasit se</Link>
                 </li>
               </ul>
