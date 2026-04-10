@@ -15,7 +15,21 @@ export const ProductDetails = ({ product }: { product: Product }) => {
         </div>
         <div className="flex flex-col flex-1 gap-8">
           <div className="font-bold text-2xl">{product.name}</div>
-          <span className="text-lg max-w-4/5">{product.description || <>&nbsp;</>}</span>
+          <div>
+            <span className="text-lg max-w-4/5">{product.description || <>&nbsp;</>}</span>
+            {product.attributes?.color && (
+              <div>
+                <span className="font-semibold">Barva: </span>
+                {product.attributes?.color}
+              </div>
+            )}
+            {product.attributes?.size && (
+              <div>
+                <span className="font-semibold">Rozměr: </span>
+                {product.attributes?.size}
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex justify-end gap-4 items-baseline">

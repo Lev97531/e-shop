@@ -100,6 +100,7 @@ export const Route = createFileRoute('/_products')({
   loader: async ({ context: { search } }) => {
     return await loadProducts({ data: search })
   },
+  loaderDeps: ({ search }) => ({ search }),
   notFoundComponent: () => <h1>Not Found</h1>,
 })
 
