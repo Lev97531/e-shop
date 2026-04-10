@@ -12,7 +12,8 @@
     "db-seed": "prisma db seed",
     "db-pull": "prisma db pull",
     "prisma-studio": "prisma studio",
-    "stripe-listen": "stripe listen --forward-to localhost:3000/stripe"
+    "stripe-listen": "stripe listen --forward-to localhost:3000/stripe",
+    "start-tunnel": "ngrok http 3000"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.2",

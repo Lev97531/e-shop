@@ -43,7 +43,11 @@ export const checkout = createServerFn({ method: 'POST' })
         }) as Stripe.Checkout.SessionCreateParams.LineItem,
     )
 
-    const baseUrl = process.env.WEBSITE_BASE_URL
+    const res = await fetch('http://127.0.0.1:4040/api/tunnels')
+    const data = await res.json()
+    const baseUrl = data.tunnels[0].public_url
+
+    // const baseUrl = process.env.TUNNEL_URL
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
