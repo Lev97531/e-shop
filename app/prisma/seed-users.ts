@@ -8,11 +8,11 @@ export const seedUsers = async () => {
 
   await prisma.user.create({
     data: {
-      email: 'bebebe@gmail.com',
+      email: 'admin@test.com',
       emailAuth: {
         create: {
-          passwordHash: 'sxfQCc65QdEg4CbORgQH2UPyGoB04drwXKks2K6GtqQ=',
-          passwordSalt: 'IiRKm87TRseZ0Eua+updcufdIdNkJJSrQR1f8jom7Uk=',
+          passwordHash: '0SblNeeYwdZYYZmOqxiyXezms1QHsQBoPPO7jYudvcg=',
+          passwordSalt: 'fiHszseHy/BovmPbZEdL2BFUnhB2yVAeCOiIPNVHe5Y=',
         },
       },
       admin: {
