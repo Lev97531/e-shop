@@ -23,7 +23,7 @@ export const Sizes = () => {
                       const checkedSize = sizes.filter((s) => size.includes(s!))
                       const newSize = checked ? [...checkedSize, s] : checkedSize.filter((c) => c !== s)
 
-                      navigate({ search: (prev) => ({ ...prev, size: newSize }) })
+                      navigate({ search: (prev) => ({ ...prev, size: newSize }), resetScroll: false })
                     }}
                   />
                   {s}

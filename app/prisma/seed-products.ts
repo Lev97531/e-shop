@@ -1,254 +1,517 @@
 import { prisma } from './prisma'
 import { toDataURL } from './to-data-url'
 
+const products = [
+  // --- ČEPICE (7 položek) ---
+  {
+    slug: 'klasicka-cepice-s-logem',
+    name: 'Klasická čepice s logem',
+    priceCents: 19900,
+    description: 'Minimalistická bavlněná čepice s vyšívaným logem.',
+    category: 'Čepice',
+    color: 'Černá',
+    size: 'M',
+    rating: 4,
+    isNew: true,
+  },
+  {
+    slug: 'zimni-cepice',
+    name: 'Zimní čepice',
+    priceCents: 14900,
+    description: 'Teplá pletená čepice na chladné počasí.',
+    category: 'Čepice',
+    color: 'Šedá',
+    size: 'M',
+  },
+  {
+    slug: 'sportovni-ksiltovka',
+    name: 'Sportovní kšiltovka',
+    priceCents: 22900,
+    description: 'Lehká kšiltovka ideální pro outdoorové aktivity.',
+    category: 'Čepice',
+    color: 'Modrá',
+    size: 'M',
+  },
+  {
+    slug: 'vlneny-kulich',
+    name: 'Vlněný kulich',
+    priceCents: 18900,
+    description: 'Extra teplý kulich z merino vlny.',
+    category: 'Čepice',
+    color: 'Béžová',
+    size: 'S',
+    isNew: true,
+  },
+  {
+    slug: 'flat-cap-stylova',
+    name: 'Stylová plochá čepice',
+    priceCents: 34900,
+    description: 'Tradiční elegance pro každodenní nošení.',
+    category: 'Čepice',
+    color: 'Hnědá',
+    size: 'L',
+  },
+  {
+    slug: 'nepromokava-cepice',
+    name: 'Nepromokavá čepice',
+    priceCents: 26900,
+    description: 'Čepice s membránou proti dešti.',
+    category: 'Čepice',
+    color: 'Černá',
+    size: 'M',
+  },
+  {
+    slug: 'detska-zimni-cepice',
+    name: 'Dětská zimní čepice',
+    priceCents: 12900,
+    description: 'Měkká a hřejivá čepice pro nejmenší.',
+    category: 'Čepice',
+    color: 'Červená',
+    size: 'S',
+    isOnSale: true,
+  },
+
+  // --- TRIČKA (7 položek) ---
+  {
+    slug: 'zakladni-bile-tricko',
+    name: 'Základní bílé tričko',
+    priceCents: 24900,
+    description: 'Prémiové bavlněné tričko s volným střihem.',
+    category: 'Trička',
+    color: 'Bílá',
+    size: 'M',
+    rating: 5,
+  },
+  {
+    slug: 'graficke-ulicni-tricko',
+    name: 'Grafické uliční tričko',
+    priceCents: 29900,
+    description: 'Uliční tričko s odvážným grafickým potiskem.',
+    category: 'Trička',
+    color: 'Černá',
+    size: 'L',
+    isOnSale: true,
+  },
+  {
+    slug: 'oversize-vintage-tricko',
+    name: 'Oversize vintage tričko',
+    priceCents: 27900,
+    description: 'Oversize tričko inspirované vintage módou.',
+    category: 'Trička',
+    color: 'Béžová',
+    size: 'XL',
+  },
+  {
+    slug: 'lnene-letni-tricko',
+    name: 'Lněné letní tričko',
+    priceCents: 39900,
+    description: 'Prodyšné tričko ze směsi lnu a bavlny.',
+    category: 'Trička',
+    color: 'Písková',
+    size: 'L',
+    rating: 5,
+  },
+  {
+    slug: 'polo-tricko-klasik',
+    name: 'Polo tričko Klasik',
+    priceCents: 44900,
+    description: 'Elegantní polo tričko s límečkem.',
+    category: 'Trička',
+    color: 'Námořnická modrá',
+    size: 'XL',
+  },
+  {
+    slug: 'tricko-s-dlouhym-rukavem',
+    name: 'Tričko s dlouhým rukávem',
+    priceCents: 32900,
+    description: 'Základní kousek pro chladnější dny.',
+    category: 'Trička',
+    color: 'Šedá',
+    size: 'M',
+  },
+  {
+    slug: 'sportovni-kompresni-tricko',
+    name: 'Sportovní kompresní tričko',
+    priceCents: 54900,
+    description: 'Funkční tričko pro maximální výkon.',
+    category: 'Trička',
+    color: 'Neonově zelená',
+    size: 'L',
+    isNew: true,
+  },
+
+  // --- MIKINY (7 položek) ---
+  {
+    slug: 'zakladni-mikina',
+    name: 'Základní mikina',
+    priceCents: 49900,
+    description: 'Pohodlná mikina s měkkým fleecem uvnitř.',
+    category: 'Mikiny',
+    color: 'Šedá',
+    size: 'L',
+    rating: 5,
+  },
+  {
+    slug: 'mikina-na-zip',
+    name: 'Mikina na zip',
+    priceCents: 54900,
+    description: 'Mikina s celým zipem pro každodenní nošení.',
+    category: 'Mikiny',
+    color: 'Černá',
+    size: 'M',
+  },
+  {
+    slug: 'oversize-mikina-premium',
+    name: 'Oversize mikina Premium',
+    priceCents: 69900,
+    description: 'Těžká bavlna a volný střih pro maximální pohodlí.',
+    category: 'Mikiny',
+    color: 'Krémová',
+    size: 'XL',
+    rating: 5,
+  },
+  {
+    slug: 'fleecova-mikina-outdoor',
+    name: 'Fleecová mikina Outdoor',
+    priceCents: 45900,
+    description: 'Hřejivá vrstva pro turistiku.',
+    category: 'Mikiny',
+    color: 'Tmavě zelená',
+    size: 'M',
+  },
+  {
+    slug: 'mikina-bez-kapuce-crewneck',
+    name: 'Mikina Crewneck',
+    priceCents: 42900,
+    description: 'Klasický střih bez kapuce se zesílenými lemy.',
+    category: 'Mikiny',
+    color: 'Bordó',
+    size: 'L',
+  },
+  {
+    slug: 'lehka-mikina-na-behani',
+    name: 'Lehká mikina na běhání',
+    priceCents: 59900,
+    description: 'Reflexní prvky a prodyšný materiál.',
+    category: 'Mikiny',
+    color: 'Žlutá',
+    size: 'S',
+    isOnSale: true,
+  },
+  {
+    slug: 'designova-mikina-limitka',
+    name: 'Designová mikina (Limitka)',
+    priceCents: 89900,
+    description: 'Unikátní potisk od lokálního umělce.',
+    category: 'Mikiny',
+    color: 'Černá',
+    size: 'L',
+    isNew: true,
+  },
+
+  // --- KALHOTY (7 položek) ---
+  {
+    slug: 'slim-fit-dziny',
+    name: 'Slim fit džíny',
+    priceCents: 59900,
+    description: 'Džíny z elastického denimu se slim fit střihem.',
+    category: 'Kalhoty',
+    color: 'Tmavě modrá',
+    size: 'L',
+  },
+  {
+    slug: 'kargo-kalhoty',
+    name: 'Kargo kalhoty',
+    priceCents: 64900,
+    description: 'Praktické kargo kalhoty s více kapsami.',
+    category: 'Kalhoty',
+    color: 'Olivová',
+    size: 'XL',
+  },
+  {
+    slug: 'chino-kalhoty-elegant',
+    name: 'Chino kalhoty Elegant',
+    priceCents: 69900,
+    description: 'Bavlněné kalhoty vhodné do kanceláře.',
+    category: 'Kalhoty',
+    color: 'Béžová',
+    size: 'M',
+    rating: 4,
+  },
+  {
+    slug: 'teplaky-joggers',
+    name: 'Tepláky Joggers',
+    priceCents: 49900,
+    description: 'Pohodlné tepláky s manžetou u kotníků.',
+    category: 'Kalhoty',
+    color: 'Antracitová',
+    size: 'L',
+  },
+  {
+    slug: 'pracovni-odolne-kalhoty',
+    name: 'Pracovní odolné kalhoty',
+    priceCents: 79900,
+    description: 'Vyztužená kolena a mnoho kapes.',
+    category: 'Kalhoty',
+    color: 'Hnědá',
+    size: 'XL',
+  },
+  {
+    slug: 'lnene-letni-kalhoty',
+    name: 'Lněné letní kalhoty',
+    priceCents: 54900,
+    description: 'Lehké kalhoty na dovolenou u moře.',
+    category: 'Kalhoty',
+    color: 'Bílá',
+    size: 'M',
+    isNew: true,
+  },
+  {
+    slug: 'cerne-dziny-slim',
+    name: 'Černé džíny Slim',
+    priceCents: 59900,
+    description: 'Univerzální džíny s příměsí elastanu.',
+    category: 'Kalhoty',
+    color: 'Černá',
+    size: 'L',
+    isOnSale: true,
+  },
+
+  // --- ŠORTKY (7 položek) ---
+  {
+    slug: 'lehke-letni-sortky',
+    name: 'Lehké letní šortky',
+    priceCents: 29900,
+    description: 'Lehké šortky ideální na letní dny.',
+    category: 'Šortky',
+    color: 'Khaki',
+    size: 'M',
+  },
+  {
+    slug: 'sportovni-sortky',
+    name: 'Sportovní šortky',
+    priceCents: 24900,
+    description: 'Prodyšné šortky pro trénink a běh.',
+    category: 'Šortky',
+    color: 'Černá',
+    size: 'L',
+    isOnSale: true,
+  },
+  {
+    slug: 'koupaci-sortky-vzor',
+    name: 'Koupací šortky se vzorem',
+    priceCents: 34900,
+    description: 'Rychleschnoucí materiál a letní design.',
+    category: 'Šortky',
+    color: 'Tyrkysová',
+    size: 'M',
+  },
+  {
+    slug: 'dziny-sortky-denim',
+    name: 'Džínové šortky Denim',
+    priceCents: 45900,
+    description: 'Klasické kraťasy z džínoviny.',
+    category: 'Šortky',
+    color: 'Světle modrá',
+    size: 'L',
+  },
+  {
+    slug: 'basketbalove-sortky-pro',
+    name: 'Basketbalové šortky PRO',
+    priceCents: 39900,
+    description: 'Volné šortky s prodyšnou síťovinou.',
+    category: 'Šortky',
+    color: 'Červená',
+    size: 'XL',
+  },
+  {
+    slug: 'chino-sortky-urban',
+    name: 'Chino šortky Urban',
+    priceCents: 42900,
+    description: 'Městský styl pro horké dny.',
+    category: 'Šortky',
+    color: 'Tmavě šedá',
+    size: 'M',
+    rating: 5,
+  },
+  {
+    slug: 'turisticke-sortky',
+    name: 'Turistické šortky',
+    priceCents: 54900,
+    description: 'Odolný materiál s UV ochranou.',
+    category: 'Šortky',
+    color: 'Khaki',
+    size: 'L',
+    isNew: true,
+  },
+  // --- KABÁTY (7 items) ---
+  {
+    slug: 'vlneny-kabat-classic',
+    name: 'Vlněný kabát Classic',
+    priceCents: 249900,
+    description: 'Elegantní dlouhý kabát z ovčí vlny.',
+    category: 'Kabáty',
+    color: 'Velbloudí',
+    size: 'L',
+    rating: 5,
+  },
+  {
+    slug: 'prošívaný-zimní-kabát',
+    name: 'Prošívaný zimní kabát',
+    priceCents: 189900,
+    description: 'Nepromokavý kabát s hřejivou výplní.',
+    category: 'Kabáty',
+    color: 'Námořnická modrá',
+    size: 'XL',
+    isNew: true,
+  },
+  {
+    slug: 'lehky-trenchcoat',
+    name: 'Lehký Trenchcoat',
+    priceCents: 159900,
+    description: 'Klasický střih do deštivého jarního počasí.',
+    category: 'Kabáty',
+    color: 'Béžová',
+    size: 'M',
+  },
+  {
+    slug: 'bomber-bunda-urban',
+    name: 'Bomber bunda Urban',
+    priceCents: 129900,
+    description: 'Stylová lehká bunda do města.',
+    category: 'Kabáty',
+    color: 'Černá',
+    size: 'L',
+  },
+  {
+    slug: 'parka-s-kozichem',
+    name: 'Zimní parka s kožíškem',
+    priceCents: 219900,
+    description: 'Odolná parka do největších mrazů.',
+    category: 'Kabáty',
+    color: 'Olivová',
+    size: 'L',
+    isOnSale: true,
+  },
+  {
+    slug: 'denimova-bunda-zateplena',
+    name: 'Zateplená džínová bunda',
+    priceCents: 139900,
+    description: 'Klasický denim s vnitřním beránkem.',
+    category: 'Kabáty',
+    color: 'Modrá',
+    size: 'M',
+  },
+  {
+    slug: 'kozena-bunda-biker',
+    name: 'Kožená bunda Biker',
+    priceCents: 349900,
+    description: 'Prémiová kůže a ikonický křivák střih.',
+    category: 'Kabáty',
+    color: 'Černá',
+    size: 'L',
+    rating: 5,
+  },
+
+  // --- DALŠÍ MIKINY & TRIČKA (8 items) ---
+  {
+    slug: 'mikina-s-rolakem',
+    name: 'Mikina s vysokým límcem',
+    priceCents: 64900,
+    description: 'Moderní střih se zapínáním u krku.',
+    category: 'Mikiny',
+    color: 'Antracitová',
+    size: 'XL',
+  },
+  {
+    slug: 'sportovni-mikina-pro',
+    name: 'Sportovní mikina PRO',
+    priceCents: 84900,
+    description: 'Technický materiál odvádějící pot.',
+    category: 'Mikiny',
+    color: 'Modrá',
+    size: 'M',
+    rating: 4,
+  },
+  {
+    slug: 'pruhovane-namornicke-tricko',
+    name: 'Pruhované námořnické tričko',
+    priceCents: 34900,
+    description: 'Klasické tričko s vodorovnými pruhy.',
+    category: 'Trička',
+    color: 'Bílo-modrá',
+    size: 'S',
+  },
+  {
+    slug: 'vystrelovaci-mikina-limitka',
+    name: 'Mikina s kapucí Limitka',
+    priceCents: 99900,
+    description: 'Exkluzivní edice s neonovým potiskem.',
+    category: 'Mikiny',
+    color: 'Fialová',
+    size: 'L',
+    isNew: true,
+  },
+  {
+    slug: 'lnena-kosile-letni',
+    name: 'Lněná košile letní',
+    priceCents: 79900,
+    description: 'Vzdušná košile ideální na pláž i do města.',
+    category: 'Trička',
+    color: 'Bílá',
+    size: 'L',
+  },
+  {
+    slug: 'mikina-z-bio-bavlny',
+    name: 'Mikina z bio bavlny',
+    priceCents: 74900,
+    description: 'Udržitelná móda s certifikací.',
+    category: 'Mikiny',
+    color: 'Písková',
+    size: 'M',
+  },
+  {
+    slug: 'tricko-v-neck-premium',
+    name: 'Tričko s V-výstřihem',
+    priceCents: 29900,
+    description: 'Jemná bavlna a elegantní výstřih.',
+    category: 'Trička',
+    color: 'Tmavě šedá',
+    size: 'M',
+  },
+  {
+    slug: 'fleecova-vesta-outdoor',
+    name: 'Fleecová vesta Outdoor',
+    priceCents: 54900,
+    description: 'Hřejivá vrstva pro turistiku a volný čas.',
+    category: 'Mikiny',
+    color: 'Šedá',
+    size: 'L',
+  },
+]
+
 export const seedProducts = async () => {
   if (await prisma.product.count()) {
     console.log('- skipping products')
     return
   }
 
-  await prisma.product.create({
-    data: {
-      slug: 'klasicka-cepice-s-logem',
-      name: 'Klasická čepice s logem',
-      priceCents: 19900,
-      description: 'Minimalistická bavlněná čepice s vyšívaným logem.',
-      imageUrl: await toDataURL('Classic Logo Cap.jpg'),
-      attributes: {
-        create: {
-          category: 'Čepice',
-          color: 'Černá',
-          size: 'M',
-          rating: 4,
-          isNew: true,
+  for (const product of products) {
+    await prisma.product.create({
+      data: {
+        slug: product.slug,
+        name: product.name,
+        priceCents: product.priceCents,
+        description: product.description,
+        imageUrl: await toDataURL(`${product.slug}.png`),
+        attributes: {
+          create: {
+            category: product.category,
+            color: product.color,
+            size: product.size,
+          },
         },
       },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'zimni-cepice',
-      name: 'Zimní čepice',
-      priceCents: 14900,
-      description: 'Teplá pletená čepice na chladné počasí.',
-      imageUrl: await toDataURL('Winter Beanie.jpg'),
-      attributes: {
-        create: {
-          category: 'Čepice',
-          color: 'Šedá',
-          size: 'M',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'zakladni-bile-tricko',
-      name: 'Základní bílé tričko',
-      priceCents: 24900,
-      description: 'Prémiové bavlněné tričko s volným střihem.',
-      imageUrl: await toDataURL('Basic White T-Shirt.jpg'),
-      attributes: {
-        create: {
-          category: 'Trička',
-          color: 'Bílá',
-          size: 'M',
-          rating: 5,
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'graficke-ulicni-tricko',
-      name: 'Grafické uliční tričko',
-      priceCents: 29900,
-      description: 'Uliční tričko s odvážným grafickým potiskem.',
-      imageUrl: await toDataURL('Graphic Street Tee.jpg'),
-      attributes: {
-        create: {
-          category: 'Trička',
-          color: 'Černá',
-          size: 'L',
-          isOnSale: true,
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'oversize-vintage-tricko',
-      name: 'Oversize vintage tričko',
-      priceCents: 27900,
-      description: 'Oversize tričko inspirované vintage módou.',
-      imageUrl: await toDataURL('Oversized Vintage Tee.jpg'),
-      attributes: {
-        create: {
-          category: 'Trička',
-          color: 'Béžová',
-          size: 'XL',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'zakladni-mikina',
-      name: 'Základní mikina',
-      priceCents: 49900,
-      description: 'Pohodlná mikina s měkkým fleecem uvnitř.',
-      imageUrl: await toDataURL('Basic Hoodie.jpg'),
-      attributes: {
-        create: {
-          category: 'Mikiny',
-          color: 'Šedá',
-          size: 'L',
-          rating: 5,
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'mikina-na-zip',
-      name: 'Mikina na zip',
-      priceCents: 54900,
-      description: 'Mikina s celým zipem pro každodenní nošení.',
-      imageUrl: await toDataURL('Zip-Up Hoodie.jpg'),
-      attributes: {
-        create: {
-          category: 'Mikiny',
-          color: 'Černá',
-          size: 'M',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'slim-fit-dziny',
-      name: 'Slim fit džíny',
-      priceCents: 59900,
-      description: 'Džíny z elastického denimu se slim fit střihem.',
-      imageUrl: await toDataURL('Slim Fit Jeans.jpg'),
-      attributes: {
-        create: {
-          category: 'Kalhoty',
-          color: 'Tmavě modrá',
-          size: 'L',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'kargo-kalhoty',
-      name: 'Kargo kalhoty',
-      priceCents: 64900,
-      description: 'Praktické kargo kalhoty s více kapsami.',
-      imageUrl: await toDataURL('Cargo Pants.jpg'),
-      attributes: {
-        create: {
-          category: 'Kalhoty',
-          color: 'Olivová',
-          size: 'XL',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'lehke-letni-sortky',
-      name: 'Lehké letní šortky',
-      priceCents: 29900,
-      description: 'Lehké šortky ideální na letní dny.',
-      imageUrl: await toDataURL('Casual Summer Shorts.jpg'),
-      attributes: {
-        create: {
-          category: 'Šortky',
-          color: 'Khaki',
-          size: 'M',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'sportovni-sortky',
-      name: 'Sportovní šortky',
-      priceCents: 24900,
-      description: 'Prodyšné šortky pro trénink a běh.',
-      imageUrl: await toDataURL('Sport Shorts.jpg'),
-      attributes: {
-        create: {
-          category: 'Šortky',
-          color: 'Černá',
-          size: 'L',
-          isOnSale: true,
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'klasicke-boty',
-      name: 'Klasické boty',
-      priceCents: 79900,
-      description: 'Nadčasové nízké boty s gumovou podrážkou.',
-      imageUrl: await toDataURL('Classic Sneakers.jpg'),
-      attributes: {
-        create: {
-          category: 'Boty',
-          color: 'Bílá',
-          size: 'M',
-          rating: 5,
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'bezecke-boty',
-      name: 'Běžecké boty',
-      priceCents: 89900,
-      description: 'Lehké běžecké boty s polstrovanou podrážkou.',
-      imageUrl: await toDataURL('Running Shoes.jpg'),
-      attributes: {
-        create: {
-          category: 'Boty',
-          color: 'Zelená',
-          size: 'L',
-        },
-      },
-    },
-  })
-
-  await prisma.product.create({
-    data: {
-      slug: 'plateny-pasek',
-      name: 'Plátěný pásek',
-      priceCents: 16900,
-      description: 'Odolný plátěný pásek s kovovou sponou.',
-      attributes: {
-        create: {
-          category: 'Doplňky',
-          color: 'Černá',
-          size: 'M',
-        },
-      },
-    },
-  })
+    })
+  }
 }
-

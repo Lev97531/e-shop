@@ -23,7 +23,7 @@ export const Colors = () => {
                       const checkedColor = colors.filter((s) => color.includes(s!))
                       const newColor = checked ? [...checkedColor, s] : checkedColor.filter((c) => c !== s)
 
-                      navigate({ search: (prev) => ({ ...prev, color: newColor }) })
+                      navigate({ search: (prev) => ({ ...prev, color: newColor }), resetScroll: false })
                     }}
                   />
                   {s}

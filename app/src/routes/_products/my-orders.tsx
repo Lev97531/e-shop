@@ -89,6 +89,17 @@ function RouteComponent() {
   const navigate = Route.useNavigate()
   const routeSearch = Route.useSearch()
 
+  if (!orders.length) {
+    return (
+      <ModalDialog>
+        <div className="flex flex-col gap-4">
+          <h1 className="text-2xl font-semibold">Moje objednávky</h1>
+          <div className="mt-4 text-2xl">Zatím nemáte žádné objednávky.</div>
+        </div>
+      </ModalDialog>
+    )
+  }
+
   return (
     <ModalDialog>
       <div className="flex flex-col gap-4">

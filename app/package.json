@@ -13,7 +13,7 @@
     "db-pull": "prisma db pull",
     "prisma-studio": "prisma studio",
     "stripe-listen": "stripe listen --forward-to localhost:3000/stripe",
-    "start-tunnel": "ngrok http 3000"
+    "start-tunnel": "cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.2",

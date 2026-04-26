@@ -43,11 +43,19 @@ export const checkout = createServerFn({ method: 'POST' })
         }) as Stripe.Checkout.SessionCreateParams.LineItem,
     )
 
-    const res = await fetch('http://127.0.0.1:4040/api/tunnels')
-    const data = await res.json()
-    const baseUrl = data.tunnels[0].public_url
+    async function getTunnelUrl() {
+      const res = await fetch('http://127.0.0.1:20241/metrics')
+      const text = await res.text()
 
-    // const baseUrl = process.env.TUNNEL_URL
+      const match = text.match(/userHostname="(https:\/\/[^"]+)"/)
+      if (!match) {
+        throw new Error('Cloudflare tunnel URL not found')
+      }
+
+      return match[1]
+    }
+
+    const baseUrl = await getTunnelUrl()
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -63,3 +71,5 @@ export const checkout = createServerFn({ method: 'POST' })
 
     return session.url
   })
+
+// const baseUrl = process.env.TUNNEL_URL
